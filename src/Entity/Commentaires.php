@@ -3,51 +3,91 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentairesRepository;
 
-/**
- * Commentaires
- *
- * @ORM\Table(name="commentaires", indexes={@ORM\Index(name="fk_commentaires_post", columns={"id_post"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: CommentairesRepository::class)]
 class Commentaires
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_commentaire", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idCommentaire;
+    #[ORM\Id] 
+    #[ORM\GeneratedValue] 
+    #[ORM\Column(type: "integer")] 
+    private ?int $idCommentaire = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
-     */
-    private $idUser;
+     
+     
+    #[ORM\Column(type: "integer")]
+    private ?int $idUser = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_post", type="integer", nullable=false)
-     */
-    private $idPost;
+    
+     
+    #[ORM\Column(type: "integer")] 
+    private ?int $idPost = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="contenu", type="string", length=200, nullable=false)
-     */
-    private $contenu;
+    #[ORM\Column(length: 200)]
+    private ?string $contenu = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Statut", type="string", length=20, nullable=false)
-     */
-    private $statut;
+    #[ORM\Column(length: 20)]
+    private ?string $statut = null;
+
+    public function getIdCommentaire(): ?int
+    {
+        return $this->idCommentaire;
+    }
+
+    public function setIdCommentaire(string $idCommentaire): static
+    {
+        $this->idCommentaire = $idCommentaire;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?int
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(string $idUser): static
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    public function getIdPost(): ?int
+    {
+        return $this->idPost;
+    }
+
+    public function setIdPost(string $idPost): static
+    {
+        $this->idPost = $idPost;
+
+        return $this;
+    }
+
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(string $contenu): static
+    {
+        $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
 
 
 }
