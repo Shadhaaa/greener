@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande index{% endblock %}
+
+{% block body %}
+    <h1>Commande </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                {# <th>CommandeId</th>
+                <th>ClientId</th>#}
+                <th>DateCommande</th>
+                <th>MontantTotal</th>
+                <th>AdresseLivraison</th>
+                <th>DateLivraison</th>
+                <th>ModePaiement</th>
+                {#<th>Panierid</th>#}
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+            <tr>
+                 {#<td>{{ commande.commandeId }}</td>
+                <td>{{ commande.clientId }}</td>#}
+                <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d') : '' }}</td>
+                <td>{{ commande.montantTotal }}</td>
+                <td>{{ commande.adresseLivraison }}</td>
+                <td>{{ commande.dateLivraison ? commande.dateLivraison|date('Y-m-d') : '' }}</td>
+                <td>{{ commande.modePaiement }}</td>
+                {#<td>{{ commande.panierid }}</td>#}
+                <td>
+                    <a href="{{ path('app_commande_show', {'commandeId': commande.commandeId}) }}">show</a>
+                    <a href="{{ path('app_commande_edit', {'commandeId': commande.commandeId}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_commande_new') }}">Create new</a>
+{% endblock %}
