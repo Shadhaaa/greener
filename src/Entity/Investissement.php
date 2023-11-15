@@ -2,73 +2,134 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\InvestissementRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Investissement
- *
- * @ORM\Table(name="investissement")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: InvestissementRepository::class)]
 class Investissement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_investissement", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idInvestissement;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $idInvestissement = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_investisseur", type="integer", nullable=false)
-     */
-    private $idInvestisseur;
+    #[ORM\Column]
+    private ?int $idInvestisseur = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_entreprise", type="integer", nullable=false)
-     */
-    private $idEntreprise;
+    #[ORM\Column]
+    private ?int $idEntreprise = null;
+  
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "vous devez entrer le montant !!!")]
+    private ?float $montant = null;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="montant", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $montant;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_debut_investissement", type="date", nullable=false)
-     */
-    private $dateDebutInvestissement;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: "vous devez enter la date !!!")]
+    private ?\DateTime $dateDebutInvestissement = null;
+    
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: "vous devez mettre votre duree prevue!!!")]
+    private ?string $dureePrevue = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="duree_prevue", type="string", length=500, nullable=false)
-     */
-    private $dureePrevue;
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: "vous devez mettre votre details!!!")]
+    private ?string $details = null;
+    
+    #[ORM\Column]
+    private ?int $status = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="details", type="string", length=500, nullable=false)
-     */
-    private $details;
+    public function getIdInvestissement(): ?int
+    {
+        return $this->idInvestissement;
+    }
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="status", type="integer", nullable=false)
-     */
-    private $status;
+    public function getIdInvestisseur(): ?int
+    {
+        return $this->idInvestisseur;
+    }
+
+    public function setIdInvestisseur(int $idInvestisseur): static
+    {
+        $this->idInvestisseur = $idInvestisseur;
+
+        return $this;
+    }
+
+    public function getIdEntreprise(): ?int
+    {
+        return $this->idEntreprise;
+    }
+
+    public function setIdEntreprise(int $idEntreprise): static
+    {
+        $this->idEntreprise = $idEntreprise;
+
+        return $this;
+    }
+
+    public function getMontant(): ?float
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(float $montant): static
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+    public function getDateDebutInvestissement(): ?\DateTimeInterface
+    {
+        return $this->dateDebutInvestissement;
+    }
+
+    public function setDateDebutInvestissement(\DateTimeInterface $dateDebutInvestissement): static
+    {
+        $this->dateDebutInvestissement = $dateDebutInvestissement;
+
+        return $this;
+    }
+
+    public function getDureePrevue(): ?string
+    {
+        return $this->dureePrevue;
+    }
+
+    public function setDureePrevue(string $dureePrevue): static
+    {
+        $this->dureePrevue = $dureePrevue;
+
+        return $this;
+    }
+
+    public function getDetails(): ?string
+    {
+        return $this->details;
+    }
+
+    public function setDetails(string $details): static
+    {
+        $this->details = $details;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
 
 
 }

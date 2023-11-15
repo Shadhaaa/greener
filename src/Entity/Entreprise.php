@@ -3,215 +3,114 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\EntrepriseRepository;
 
-#[ORM\Entity(repositoryClass: EntrepriseRepository::class)]
+/**
+ * Entreprise
+ *
+ * @ORM\Table(name="entreprise")
+ * @ORM\Entity
+ */
 class Entreprise
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $idEntreprise = null;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_entreprise", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idEntreprise;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="nom", type="string", length=20, nullable=true)
+     */
+    private $nom;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="prenom", type="string", length=25, nullable=true)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pdp", type="string", length=200, nullable=false)
+     */
+    private $pdp;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="num", type="integer", nullable=false)
+     */
+    private $num;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mail", type="string", length=20, nullable=false)
+     */
+    private $mail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mdp1", type="string", length=30, nullable=false)
+     */
+    private $mdp1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="role", type="string", length=20, nullable=false)
+     */
+    private $role;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=50, nullable=false)
+     */
+    private $adresse;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="genre", type="string", length=30, nullable=false)
+     */
+    private $genre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logo", type="string", length=200, nullable=false)
+     */
+    private $logo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom_entreprise", type="string", length=20, nullable=false)
+     */
+    private $nomEntreprise;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="secteur", type="string", length=40, nullable=false)
+     */
+    private $secteur;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=30, nullable=false)
+     */
+    private $description;
 
 
-    #[ORM\Column(length: 150)]
-    private ?string $nom = null;
-
-    #[ORM\Column(length: 25)]
-    private ?string $prenom = null;
-
-    #[ORM\Column(length: 25)]
-    private ?string $pdp;
-
-    #[ORM\Column]
-    private ?int $num;
-
-    #[ORM\Column(length: 20)]
-    private ?string $mail;
-
-    #[ORM\Column(length: 30)]
-    private ?string $mdp1;
-
-    #[ORM\Column(length: 20)]
-    private ?string $role;
-
-    #[ORM\Column(length: 50)]
-    private ?string $adresse;
-
-    #[ORM\Column(length: 30)]
-    private ?string $genre;
-
-    #[ORM\Column(length: 200)]
-    private ?string $logo;
-
-
-    #[ORM\Column(length: 200)]
-    private ?string $nomEntreprise;
-
-    #[ORM\Column(length: 40)]
-    private ?string  $secteur;
-
-    #[ORM\Column(length: 30)]
-    private ?string $description;
-
-    public function getIdEntreprise(): ?int
-    {
-        return $this->idEntreprise;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(?string $nom): static
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(?string $prenom): static
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getPdp(): ?string
-    {
-        return $this->pdp;
-    }
-
-    public function setPdp(string $pdp): static
-    {
-        $this->pdp = $pdp;
-
-        return $this;
-    }
-
-    public function getNum(): ?int
-    {
-        return $this->num;
-    }
-
-    public function setNum(int $num): static
-    {
-        $this->num = $num;
-
-        return $this;
-    }
-
-    public function getMail(): ?string
-    {
-        return $this->mail;
-    }
-
-    public function setMail(string $mail): static
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getMdp1(): ?string
-    {
-        return $this->mdp1;
-    }
-
-    public function setMdp1(string $mdp1): static
-    {
-        $this->mdp1 = $mdp1;
-
-        return $this;
-    }
-
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): static
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(string $adresse): static
-    {
-        $this->adresse = $adresse;
-
-        return $this;
-    }
-
-    public function getGenre(): ?string
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(string $genre): static
-    {
-        $this->genre = $genre;
-
-        return $this;
-    }
-
-    public function getLogo(): ?string
-    {
-        return $this->logo;
-    }
-
-    public function setLogo(string $logo): static
-    {
-        $this->logo = $logo;
-
-        return $this;
-    }
-
-    public function getNomEntreprise(): ?string
-    {
-        return $this->nomEntreprise;
-    }
-
-    public function setNomEntreprise(string $nomEntreprise): static
-    {
-        $this->nomEntreprise = $nomEntreprise;
-
-        return $this;
-    }
-
-    public function getSecteur(): ?string
-    {
-        return $this->secteur;
-    }
-
-    public function setSecteur(string $secteur): static
-    {
-        $this->secteur = $secteur;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
 }

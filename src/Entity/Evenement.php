@@ -3,86 +3,167 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use App\Repository\EvenementRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Evenement
- *
- * @ORM\Table(name="evenement")
- * @ORM\Entity
- */
+
+#[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_evenement", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idEvenement;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $idEvenement = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_entreprise", type="integer", nullable=false)
-     */
-    private $idEntreprise;
+    #[ORM\Column]
+    private ?int $idEntreprise = null;
+    
+    #[ORM\Column]
+    private ?int $idParticipant = null;
+    
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: "vous devez mettre votre titre !!!")]
+    private ?string $titreEvenement = null;
+   
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: "vous devez entrer la date !!!")]
+    #[Assert\Date\DateTime(message: "vous devez entrer la date !!!")]
+    private ?\DateTime $dateEvenement = null;
+    
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: "vous devez mettre votre qrcode !!!")]
+    private ?string $qrcode = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_participant", type="integer", nullable=false)
-     */
-    private $idParticipant;
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: "vous devez mettre votre lieu!!!")]
+    #[Assert\Url(message: "vous devez entrer une adresse URL valid !!!")]
+    private ?string $imageEvenement = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titre_evenement", type="string", length=500, nullable=false)
-     */
-    private $titreEvenement;
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: "vous devez mettre votre lieu!!!")]
+    private ?string $lieuEvenement= null;
+    
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: "vous devez mettre votre description!!!")]
+    private ?string $descriptionEvenement= null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="date_evenement", type="string", length=100, nullable=false)
-     */
-    private $dateEvenement;
+    #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: "vous devez mettre votre liste!!!")]
+    private ?string $liste_participants= null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="QRcode", type="string", length=500, nullable=false)
-     */
-    private $qrcode;
+    public function getIdEvenement(): ?int
+    {
+        return $this->idEvenement;
+    }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="image_evenement", type="string", length=500, nullable=false)
-     */
-    private $imageEvenement;
+    public function getIdEntreprise(): ?int
+    {
+        return $this->idEntreprise;
+    }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lieu_evenement", type="string", length=500, nullable=false)
-     */
-    private $lieuEvenement;
+    public function setIdEntreprise(int $idEntreprise): static
+    {
+        $this->idEntreprise = $idEntreprise;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description_evenement", type="string", length=500, nullable=false)
-     */
-    private $descriptionEvenement;
+        return $this;
+    }
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="liste_participants", type="string", length=500, nullable=false)
-     */
-    private $listeParticipants;
+    public function getIdParticipant(): ?int
+    {
+        return $this->idParticipant;
+    }
+
+    public function setIdParticipant(int $idParticipant): static
+    {
+        $this->idParticipant = $idParticipant;
+
+        return $this;
+    }
+
+    public function getTitreEvenement(): ?string
+    {
+        return $this->titreEvenement;
+    }
+
+    public function setTitreEvenement(string $titreEvenement): static
+    {
+        $this->titreEvenement = $titreEvenement;
+
+        return $this;
+    }
+
+    public function getDateEvenement(): ?\DateTimeInterface
+    {
+        return $this->dateEvenement;
+    }
+
+    public function setDateEvenement(\DateTimeInterface $dateEvenement): static
+    {
+        $this->dateEvenement = $dateEvenement;
+
+        return $this;
+    }
+
+    public function getQrcode(): ?string
+    {
+        return $this->qrcode;
+    }
+
+    public function setQrcode(string $qrcode): static
+    {
+        $this->qrcode = $qrcode;
+
+        return $this;
+    }
+
+    public function getImageEvenement(): ?string
+    {
+        return $this->imageEvenement;
+    }
+
+    public function setImageEvenement(string $imageEvenement): static
+    {
+        $this->imageEvenement = $imageEvenement;
+
+        return $this;
+    }
+
+    public function getLieuEvenement(): ?string
+    {
+        return $this->lieuEvenement;
+    }
+
+    public function setLieuEvenement(string $lieuEvenement): static
+    {
+        $this->lieuEvenement = $lieuEvenement;
+
+        return $this;
+    }
+
+    public function getDescriptionEvenement(): ?string
+    {
+        return $this->descriptionEvenement;
+    }
+
+    public function setDescriptionEvenement(string $descriptionEvenement): static
+    {
+        $this->descriptionEvenement = $descriptionEvenement;
+
+        return $this;
+    }
+
+    public function getListeParticipants(): ?string
+    {
+        return $this->liste_participants;
+    }
+
+    public function setListeParticipants(string $liste_participants): static
+    {
+        $this->liste_participants = $liste_participants;
+
+        return $this;
+    }
 
 
 }

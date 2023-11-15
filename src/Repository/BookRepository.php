@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -22,19 +21,9 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    //  /**
-    // * @return Book[] Returns an array of Book objects
-    //  */
-
-
-
-    public function maxID($value)
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.idUser = :val')
-            ->setParameter('val', $value);
-    }
-}
+//    /**
+//     * @return Book[] Returns an array of Book objects
+//     */
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('b')
@@ -56,3 +45,4 @@ class BookRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+}
