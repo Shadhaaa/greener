@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Energie index{% endblock %}
+
+{% block body %}
+    <h1>Energie index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Libellet</th>
+                <th>Pollution Par Kw</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for E in Energies %}
+            <tr>
+                <td>{{E.libelletEnergie}}</td>
+                <td>{{E.pollutionParKw}}</td>
+                <td>
+                    <a href="{{ path('app_energie_edit', {'idEnergie': E.idEnergie}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_energie_new') }}">Create new</a>
+{% endblock %}
