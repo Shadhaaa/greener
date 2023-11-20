@@ -30,10 +30,12 @@ class Post
 
     
     #[ORM\Column(length: 100)] 
+    #[Assert\NotBlank(message: 'you should add a type')]
     private ?string $typedecontenu = null;
 
     
     #[ORM\Column(length: 500)]
+    #[Assert\NotBlank(message: 'the content should not be empty')]
     private ?string $contenu = null;
 
     
@@ -43,7 +45,7 @@ class Post
     
 
     #[ORM\Column(length: 200)]
-    #[Assert\Url(message:'enter a valid url')]
+    
     private ? string $image = null;
 
     public function getIdPost(): ?int

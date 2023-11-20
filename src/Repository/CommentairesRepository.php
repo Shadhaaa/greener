@@ -21,6 +21,14 @@ class CommentairesRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentaires::class);
     }
 
+    public function findCommentsByPost(Post $post)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.post = :post')
+            ->setParameter('post', $post)
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Commentaires[] Returns an array of Commentaires objects
 //     */

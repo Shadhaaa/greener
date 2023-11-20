@@ -22,6 +22,15 @@ class PostController extends AbstractController
         ]);
     }
 
+// front user : 
+    #[Route('/user', name: 'app_post_user', methods: ['GET'])]
+    public function index2(PostRepository $postRepository): Response
+    {
+        return $this->render('Front/user/postUserHome.html.twig', [
+            'posts' => $postRepository->findAll(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -30,6 +39,13 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                
+                $post->setImage($generatedImageURL);
+            }
+            
             $entityManager->persist($post);
             $entityManager->flush();
 
@@ -77,5 +93,16 @@ class PostController extends AbstractController
         }
 
         return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{idPost}/commentaires', name: 'app_post_comments', methods: ['GET'])]
+    public function showComments(Post $post, CommentaireRepository $commentaireRepository): Response
+    {
+        $comments = $commentaireRepository->findCommentsByPost($post);
+
+        return $this->render('post/comments.html.twig', [
+            'post' => $post,
+            'comments' => $comments,
+        ]);
     }
 }

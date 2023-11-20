@@ -22,6 +22,14 @@ class CommentairesController extends AbstractController
         ]);
     }
 
+    #[Route('/user', name: 'app_commentaires_user', methods: ['GET'])]
+    public function index1(CommentairesRepository $commentairesRepository): Response
+    {
+        return $this->render('Front/user/commentairesUserHome.html.twig', [
+            'commentaires' => $commentairesRepository->findAll(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_commentaires_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -42,10 +50,38 @@ class CommentairesController extends AbstractController
         ]);
     }
 
+    #[Route('/user/new', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
+    public function new1(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $commentaire = new Commentaires();
+        $form = $this->createForm(CommentairesType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($commentaire);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_commentaires_user', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('Front/user/newCmntUser.html.twig', [
+            'commentaire' => $commentaire,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{idCommentaire}', name: 'app_commentaires_show', methods: ['GET'])]
     public function show(Commentaires $commentaire): Response
     {
         return $this->render('commentaires/show.html.twig', [
+            'commentaire' => $commentaire,
+        ]);
+    }
+
+    #[Route('/user/{idCommentaire}', name: 'app_commentaires_show1', methods: ['GET'])]
+    public function show1(Commentaires $commentaire): Response
+    {
+        return $this->render('Front/user/showCmntUser.html.twig', [
             'commentaire' => $commentaire,
         ]);
     }
@@ -68,6 +104,24 @@ class CommentairesController extends AbstractController
         ]);
     }
 
+    #[Route('/user/{idCommentaire}/edit', name: 'app_commentaires_edit1', methods: ['GET', 'POST'])]
+    public function edit1(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(CommentairesType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_commentaires_user', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('Front/user/editCmntUser.html.twig', [
+            'commentaire' => $commentaire,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{idCommentaire}', name: 'app_commentaires_delete', methods: ['POST'])]
     public function delete(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
     {
@@ -78,4 +132,19 @@ class CommentairesController extends AbstractController
 
         return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/user/{idCommentaire}', name: 'app_commentaires_delete1', methods: ['POST'])]
+    public function delete1(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$commentaire->getIdCommentaire(), $request->request->get('_token'))) {
+            $entityManager->remove($commentaire);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_commentaires_user', [], Response::HTTP_SEE_OTHER);
+    }
+
+    //front user 
+    
+    
 }
