@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommentairesRepository;
 
+
 #[ORM\Entity(repositoryClass: CommentairesRepository::class)]
 class Commentaires
 {
@@ -18,7 +19,14 @@ class Commentaires
     #[ORM\Column(type: "integer")]
     private ?int $idUser = null;
 
-    
+    #[ORM\ManyToOne(inversedBy: 'commentaires', targetEntity: Post::class)]
+    #[ORM\JoinColumn(name: 'id_post', referencedColumnName: 'id_post')]
+
+    private ?Post $post = null;
+
+    /*#[ORM\ManyToOne(inversedBy: 'commentaires', targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'id_user', referencedColumnName: 'id_user')]
+    private ?User $user = null;*/
      
     #[ORM\Column(type: "integer")] 
     private ?int $idPost = null;
@@ -28,6 +36,8 @@ class Commentaires
 
     #[ORM\Column(length: 20)]
     private ?string $statut = null;
+
+    
 
     public function getIdCommentaire(): ?int
     {
@@ -88,6 +98,30 @@ class Commentaires
 
         return $this;
     }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Post $post): static
+    {
+        $this->post = $post;
+
+        return $this;
+    }
+
+    /*public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }*/
 
 
 }

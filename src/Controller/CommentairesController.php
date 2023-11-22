@@ -3,13 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Commentaires;
+use App\Entity\Post;
 use App\Form\CommentairesType;
 use App\Repository\CommentairesRepository;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+
+
 
 #[Route('/commentaires')]
 class CommentairesController extends AbstractController
@@ -21,7 +26,7 @@ class CommentairesController extends AbstractController
             'commentaires' => $commentairesRepository->findAll(),
         ]);
     }
-
+// front user
     #[Route('/user', name: 'app_commentaires_user', methods: ['GET'])]
     public function index1(CommentairesRepository $commentairesRepository): Response
     {
@@ -30,14 +35,23 @@ class CommentairesController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_commentaires_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{idPost}/new-comment', name: 'app_commentaires_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, $idPost, EntityManagerInterface $entityManager): Response
     {
+        $post = $entityManager->getRepository(Post::class)->find($idPost);
+
+        if (!$post) {
+            throw $this->createNotFoundException('The post does not exist');
+        }
+
         $commentaire = new Commentaires();
+        $commentaire->setIdPost($idPost); // Set the ID of the post for the comment
+
         $form = $this->createForm(CommentairesType::class, $commentaire);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $commentaire->setPost($post); // Set the post for the comment
             $entityManager->persist($commentaire);
             $entityManager->flush();
 
@@ -50,7 +64,29 @@ class CommentairesController extends AbstractController
         ]);
     }
 
-    #[Route('/user/new', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
+    /*#[Route('/new', name: 'app_commentaires_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $commentaire = new Commentaires();
+        $form = $this->createForm(CommentairesType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager->persist($commentaire);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('commentaires/new.html.twig', [
+            'commentaire' => $commentaire,
+            'form' => $form,
+        ]);
+    }*/
+    
+// front user
+    /*#[Route('/user/new', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
     public function new1(Request $request, EntityManagerInterface $entityManager): Response
     {
         $commentaire = new Commentaires();
@@ -58,6 +94,35 @@ class CommentairesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($commentaire);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_commentaires_user', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('Front/user/newCmntUser.html.twig', [
+            'commentaire' => $commentaire,
+            'form' => $form,
+        ]);
+    }*/
+
+    #[Route('/user/{idPost}/new-comment', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
+    public function new1(Request $request, $idPost, EntityManagerInterface $entityManager): Response
+    {
+        $post = $entityManager->getRepository(Post::class)->find($idPost);
+
+        if (!$post) {
+            throw $this->createNotFoundException('The post does not exist');
+        }
+
+        $commentaire = new Commentaires();
+        $commentaire->setIdPost($idPost); // Set the ID of the post for the comment
+
+        $form = $this->createForm(CommentairesType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commentaire->setPost($post); // Set the post for the comment
             $entityManager->persist($commentaire);
             $entityManager->flush();
 
@@ -78,6 +143,7 @@ class CommentairesController extends AbstractController
         ]);
     }
 
+// front user
     #[Route('/user/{idCommentaire}', name: 'app_commentaires_show1', methods: ['GET'])]
     public function show1(Commentaires $commentaire): Response
     {
@@ -104,6 +170,7 @@ class CommentairesController extends AbstractController
         ]);
     }
 
+    // front user
     #[Route('/user/{idCommentaire}/edit', name: 'app_commentaires_edit1', methods: ['GET', 'POST'])]
     public function edit1(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
     {
@@ -132,7 +199,7 @@ class CommentairesController extends AbstractController
 
         return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
     }
-
+// front user
     #[Route('/user/{idCommentaire}', name: 'app_commentaires_delete1', methods: ['POST'])]
     public function delete1(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
     {
@@ -144,7 +211,17 @@ class CommentairesController extends AbstractController
         return $this->redirectToRoute('app_commentaires_user', [], Response::HTTP_SEE_OTHER);
     }
 
-    //front user 
     
     
+    #[Route('/user/{idPost}', name: 'app_comments_show_by_post', methods: ['GET'])]
+    public function showCommentsByPost($idPost, CommentairesRepository $commentairesRepository): Response
+    {
+        // Fetch comments by post ID using the repository function
+        $comments = $commentairesRepository->findBy(['idPost' => $idPost]);
+    
+        return $this->render('Front/user/showCmnt_by_post.html.twig', [
+            'comments' => $comments,
+        ]);
+    }
+
 }

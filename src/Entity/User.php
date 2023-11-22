@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 
@@ -12,6 +14,9 @@ class User
 
     #[ORM\Column(type: "integer")]
     private ?int $idUser = null;
+
+    /*#[ORM\OneToMany(mappedBy: 'user' , targetEntity: Commentaires::class,cascade:["remove"],orphanRemoval:true )]
+    private Collection $commentaires;*/
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $nom = null;
@@ -42,6 +47,11 @@ class User
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $investisseurInv = null;
+
+    public function __construct()
+    {
+        $this->commentaires = new ArrayCollection();
+    }
 
     public function getIdUser(): ?int
     {
@@ -172,4 +182,34 @@ class User
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Commentaires>
+     */
+    /*public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaires $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaires $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getUser() === $this) {
+                $commentaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }*/
 }
