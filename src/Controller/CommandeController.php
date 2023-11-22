@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Commande;
+use App\Entity\Panier;
 use App\Repository\CommandeRepository;
+use App\Repository\PanierRepository;
 use App\Form\CommandeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +24,7 @@ class CommandeController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
+   /* #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $commande = new Commande();
@@ -40,7 +42,38 @@ class CommandeController extends AbstractController
             'commande' => $commande,
             'form' => $form,
         ]);
+    }*/
+
+    #[Route('/new/{panierid}', name: 'app_commande_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager, $panierid): Response
+{
+    // Récupérer le panier associé à l'ID
+    $panier = $entityManager->getRepository(Panier::class)->find($panierid);
+
+    $clientid = 1;
+
+    // Créez une nouvelle commande associée à ce panier
+    $commande = new Commande();
+    $commande->setClientId($clientid);
+    $commande->setPanier($panier);
+
+    // Utilisez le formulaire pour la création de la commande
+    $form = $this->createForm(CommandeType::class, $commande);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->persist($commande);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('commande/new.html.twig', [
+        'commande' => $commande,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{commandeId}', name: 'app_commande_show', methods: ['GET'])]
     public function show(Commande $commande): Response
@@ -78,4 +111,6 @@ class CommandeController extends AbstractController
 
         return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
     }
+   
+
 }

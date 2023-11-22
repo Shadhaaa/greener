@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use App\Repository\CommandeRepository ;
+
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
 {
@@ -18,6 +19,12 @@ class Commande
    
     #[ORM\Column(type: "integer")]
     private ?int $clientId = null;
+
+
+    #[ORM\ManyToOne(inversedBy: 'commandes', targetEntity: Panier::class)]
+    #[ORM\JoinColumn(name: 'panierid', referencedColumnName:'panierid')]
+    
+    private ?Panier $panier = null;
 
 
    
@@ -132,6 +139,18 @@ class Commande
     public function setPanierid(int $panierid): static
     {
         $this->panierid = $panierid;
+
+        return $this;
+    }
+
+    public function getPanier(): ?Panier
+    {
+        return $this->panier;
+    }
+
+    public function setPanier(?Panier $panier): static
+    {
+        $this->panier = $panier;
 
         return $this;
     }

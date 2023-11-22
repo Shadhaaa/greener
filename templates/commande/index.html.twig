@@ -33,6 +33,7 @@
                 <td>
                     <a href="{{ path('app_commande_show', {'commandeId': commande.commandeId}) }}">show</a>
                     <a href="{{ path('app_commande_edit', {'commandeId': commande.commandeId}) }}">edit</a>
+                   
                 </td>
             </tr>
         {% else %}
@@ -43,5 +44,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_commande_new') }}">Create new</a>
+    
+     {% if panier is defined %}
+        <a href="{{ path('app_commande_new', {'panierid': panier.panierid}) }}">Create new</a>
+    {% endif %}
+
 {% endblock %}
