@@ -45,4 +45,21 @@ class ProduitRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function searchByCriteria($category, $energie)
+{
+    $qb = $this->createQueryBuilder('p');
+
+    if ($category) {
+        $qb->andWhere('p.Category = :category')
+           ->setParameter('category', $category);
+    }
+
+    if ($energie) {
+        $qb->andWhere('p.typeEnergie = :energie')
+           ->setParameter('energie', $energie);
+    }
+
+    return $qb->getQuery()->getResult();
+}
 }

@@ -39,27 +39,20 @@ class Produit
 
     #[ORM\ManyToOne]
     private ?Categorie $categorie = null;
-
-    #[ORM\ManyToMany(targetEntity: Vehicule::class)]
-    private Collection $vehicules;
-
-    #[ORM\ManyToMany(targetEntity: Energie::class)]
-    private Collection $energies;
-
     #[ORM\ManyToOne]
     private ?Entreprise $entreprise = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
-    private ?array $consommationEnergie = null;
+    #[ORM\ManyToOne]
+    private ?Energie $typeEnergie = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
-    private ?array $distanceVehicule = null;
+    #[ORM\ManyToOne]
+    private ?Vehicule $typeVehicule = null;
 
-    public function __construct()
-    {
-        $this->vehicules = new ArrayCollection();
-        $this->energies = new ArrayCollection();
-    }
+    #[ORM\Column(nullable: true)]
+    private ?float $consommationrnEnergie = null;
+
+    #[ORM\Column]
+    private ?float $distanceVehicule = null;
     public function getIdProduit(): ?int
     {
         return $this->id;
@@ -159,55 +152,6 @@ class Produit
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Vehicule>
-     */
-    public function getVehicules(): Collection
-    {
-        return $this->vehicules;
-    }
-
-    public function addVehicule(Vehicule $vehicule): static
-    {
-        if (!$this->vehicules->contains($vehicule)) {
-            $this->vehicules->add($vehicule);
-        }
-
-        return $this;
-    }
-
-    public function removeVehicule(Vehicule $vehicule): static
-    {
-        $this->vehicules->removeElement($vehicule);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Energie>
-     */
-    public function getEnergies(): Collection
-    {
-        return $this->energies;
-    }
-
-    public function addEnergy(Energie $energy): static
-    {
-        if (!$this->energies->contains($energy)) {
-            $this->energies->add($energy);
-        }
-
-        return $this;
-    }
-
-    public function removeEnergy(Energie $energy): static
-    {
-        $this->energies->removeElement($energy);
-
-        return $this;
-    }
-
     public function getEntreprise(): ?Entreprise
     {
         return $this->entreprise;
@@ -220,28 +164,51 @@ class Produit
         return $this;
     }
 
-    public function getConsommationEnergie(): ?array
+    public function getTypeEnergie(): ?Energie
     {
-        return $this->consommationEnergie;
+        return $this->typeEnergie;
     }
 
-    public function setConsommationEnergie(?array $consommationEnergie): static
+    public function setTypeEnergie(?Energie $typeEnergie): static
     {
-        $this->consommationEnergie = $consommationEnergie;
+        $this->typeEnergie = $typeEnergie;
 
         return $this;
     }
 
-    public function getDistanceVehicule(): ?array
+    public function getTypeVehicule(): ?Vehicule
+    {
+        return $this->typeVehicule;
+    }
+
+    public function setTypeVehicule(?Vehicule $typeVehicule): static
+    {
+        $this->typeVehicule = $typeVehicule;
+
+        return $this;
+    }
+
+    public function getConsommationrnEnergie(): ?float
+    {
+        return $this->consommationrnEnergie;
+    }
+
+    public function setConsommationrnEnergie(?float $consommationrnEnergie): static
+    {
+        $this->consommationrnEnergie = $consommationrnEnergie;
+
+        return $this;
+    }
+
+    public function getDistanceVehicule(): ?float
     {
         return $this->distanceVehicule;
     }
 
-    public function setDistanceVehicule(?array $distanceVehicule): static
+    public function setDistanceVehicule(float $distanceVehicule): static
     {
         $this->distanceVehicule = $distanceVehicule;
 
         return $this;
     }
-
 }

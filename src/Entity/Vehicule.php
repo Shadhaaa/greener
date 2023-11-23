@@ -28,12 +28,12 @@ class Vehicule
         return $this->id;
     }
 
-    public function getLibellet(): ?string
+    public function getLibelletVehicule(): ?string
     {
         return $this->LibelletVehicule;
     }
 
-    public function setLibellet(?string $Libellet): static
+    public function setLibelletVehicule(?string $Libellet): static
     {
         $this->LibelletVehicule = $Libellet;
 

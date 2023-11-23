@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit index{% endblock %}
+
+{% block body %}
+   <a href="{{ path('app_energie_index') }}">Energies</a>
+   <a href="{{ path('app_vehicule_index') }}">Vehicules</a>
+   <a href="{{ path('app_categorie_index') }}">Categories</a>
+{% endblock %}
