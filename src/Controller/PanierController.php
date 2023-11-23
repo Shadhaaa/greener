@@ -45,6 +45,11 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+        // Calculate total based on price and quantity
+        $total = $panier->getPrix() * $panier->getQuantite();
+        $panier->setTotal($total);
+
+
         $entityManager->persist($panier);
         $entityManager->flush();
 

@@ -14,7 +14,7 @@ class CommandeType extends AbstractType
         $builder
             //->add('clientId')
             ->add('dateCommande')
-            ->add('montantTotal')
+            //->add('montantTotal')
             ->add('adresseLivraison')
             ->add('dateLivraison')
             ->add('modePaiement')

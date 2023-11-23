@@ -33,7 +33,11 @@
                 <td>
                     <a href="{{ path('app_commande_show', {'commandeId': commande.commandeId}) }}">show</a>
                     <a href="{{ path('app_commande_edit', {'commandeId': commande.commandeId}) }}">edit</a>
-                    <a href="{{ path('stripe_checkout', {'commandeId': commande.commandeId}) }}">payer</a>
+                    {% if commande.modePaiement in ['carte', 'card'] %}
+                        <a href="{{ path('stripe_checkout', {'commandeId': commande.commandeId}) }}">pay online </a>
+                    {% else %}
+                         <a href="#" onclick="showAlert()">pay online</a>
+                    {% endif %}
                    
                 </td>
             </tr>
@@ -49,5 +53,9 @@
      {% if panier is defined %}
         <a href="{{ path('app_commande_new', {'panierid': panier.panierid}) }}">Create new</a>
     {% endif %}
-
+<script>
+    function showAlert() {
+        alert("Veuillez modifier le mode de paiement avant de payer.");
+    }
+</script>
 {% endblock %}

@@ -16,7 +16,7 @@ class PanierType extends AbstractType
             //->add('produitid')
             ->add('quantite')
             ->add('prix')
-            ->add('total')
+            //->add('total')
             ->add('nomproduit')
         ;
     }

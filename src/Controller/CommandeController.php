@@ -57,6 +57,9 @@ public function new(Request $request, EntityManagerInterface $entityManager, $pa
     $commande->setClientId($clientid);
     $commande->setPanier($panier);
 
+     // Set the montantTotal of the commande to the total of the panier
+     $commande->setMontantTotal($panier->getTotal());
+
     // Utilisez le formulaire pour la création de la commande
     $form = $this->createForm(CommandeType::class, $commande);
     $form->handleRequest($request);
