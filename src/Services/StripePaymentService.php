@@ -5,16 +5,19 @@ namespace App\Services;
 use App\Entity\Commande;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StripePaymentService
 {
     private $publicKey;
     private $secretKey;
+    private $urlGenerator;
 
-public function __construct()
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->publicKey = 'pk_test_51O4X5XCZicFmO9OlJS5yjZ9LhBEOAKt28ROnDYVTz1fnJkUkyORJe7Uzmtl0Xo1ttv0dJIVduvoQ5zlAqyxLP5Rp00yBcHabL2';
         $this->secretKey = 'sk_test_51O4X5XCZicFmO9OlQe9jkt0X8JF0xPTV2zzNSCWDbl4uUMOPeQIjPbw2HGR9vO19nszhq47MUrxRexNtQNQTiu4900NQpdYyUm';
+        $this->urlGenerator = $urlGenerator;
 
         // Configurez la clé secrète de Stripe
         Stripe::setApiKey($this->secretKey);
@@ -38,8 +41,8 @@ public function __construct()
                 ],
             ],
             'mode' => 'payment',
-            'success_url' => 'http://localhost:8000/stripe/payment-success/{CHECKOUT_SESSION_ID}', // Remplacez par l'URL de succès de votre choix
-            'cancel_url' => 'http://localhost:8000/stripe/payment-cancel/{CHECKOUT_SESSION_ID}', // Remplacez par l'URL d'annulation de votre choix
+            'success_url' => $this->urlGenerator->generate('stripe_payment_success', ['sessionId' => $commande->getCommandeId()], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->urlGenerator->generate('stripe_payment_cancel', ['sessionId' => $commande->getCommandeId()], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
 
         return $session->id;

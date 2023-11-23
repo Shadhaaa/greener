@@ -22,4 +22,17 @@ class StripeController extends AbstractController
             'commande' => $commande,
         ]);
     }
+    #[Route('/stripe/payment-success/{sessionId}', name: 'stripe_payment_success')]
+    public function success(string $sessionId): Response
+    {
+        // Ajoutez ici le code nécessaire pour la page de succès
+        return $this->render('stripe/success.html.twig', ['sessionId' => $sessionId]);
+    }
+
+    #[Route('/stripe/payment-cancel/{sessionId}', name: 'stripe_payment_cancel')]
+    public function cancel(string $sessionId): Response
+    {
+        // Ajoutez ici le code nécessaire pour la page d'annulation
+        return $this->render('stripe/cancel.html.twig', ['sessionId' => $sessionId]);
+    }
 }

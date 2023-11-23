@@ -33,6 +33,7 @@
                 <td>
                     <a href="{{ path('app_commande_show', {'commandeId': commande.commandeId}) }}">show</a>
                     <a href="{{ path('app_commande_edit', {'commandeId': commande.commandeId}) }}">edit</a>
+                    <a href="{{ path('stripe_checkout', {'commandeId': commande.commandeId}) }}">payer</a>
                    
                 </td>
             </tr>
