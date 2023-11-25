@@ -2,7 +2,15 @@
 
 {% block title %}Edit mes cordonnees
 {% endblock %}
+{% block  crud %}{% endblock %}
+{%   block up%}
 
+<div class="header-menu">
+	<a class="menu-link is-active" href="{{ path('app_user_profile', {'idUser': user.idUser}) }}">Acceuil</a>
+	<a class="menu-link" href="#">Decouvrir</a>
+	<a class="menu-link notify" href="#">nos contact</a>
+</div>
+{% endblock%}
 {% block body %}
 	<h1>Editer mes coordonner</h1>
 

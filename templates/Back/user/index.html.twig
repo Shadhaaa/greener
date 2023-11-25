@@ -11,11 +11,11 @@
 			<tr>
 				<th>Nom</th>
 				<th>Prenom</th>
-				<th>Photo de profile</th>
 				<th>Num</th>
 				<th>Mail</th>
 				<th>Mdp1</th>
-				<th>Role</th>
+				<th>actions</th>
+				<th>actions</th>
 				<th>actions</th>
 			</tr>
 		</thead>
@@ -24,16 +24,23 @@
 				<tr>
 					<td>{{ user.nom }}</td>
 					<td>{{ user.prenom }}</td>
-					<td>{{ user.pdp }}</td>
 					<td>{{ user.num }}</td>
 					<td>{{ user.mail }}</td>
 					<td>{{ user.mdp1 }}</td>
-					<td>{{ user.role }}</td>
 					<td>
-						<a href="{{ path('app_user_delete', {'idUser': user.idUser}) }}">supprimer</a>
-
-						<a href="{{ path('app_user_show', {'idUser': user.idUser}) }}">details</a>
-						<a href="{{ path('app_user_edit', {'idUser': user.idUser}) }}">editer</a>
+						<button class="btn">
+							<a href="{{ path('app_user_delete', {'idUser': user.idUser}) }}">supprimer</a>
+						</button>
+					</td>
+					<td>
+						<button class="btn">
+							<a href="{{ path('app_user_show', {'idUser': user.idUser}) }}">details</a>
+						</button>
+					</td>
+					<td>
+						<button class="btn">
+							<a href="{{ path('app_user_edit', {'idUser': user.idUser}) }}">editer</a>
+						</button>
 					</td>
 				</tr>
 			{% else %}
@@ -46,5 +53,8 @@
 
 	<button class="btn">
 		<a href="{{ path('app_user_new') }}">Create new</a>
+	</button>
+	<button class="btn">
+		<a href="{{ path('app_user_cnx') }}">deconnecter</a>
 	</button>
 {% endblock %}

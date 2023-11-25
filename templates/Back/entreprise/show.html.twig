@@ -2,6 +2,21 @@
 
 {% block title %}Entreprise
 {% endblock %}
+{%   block up%}
+	<div class="header-menu">
+		<a class="menu-link is-active" href="{{ path('app_entreprise_index') }}">Acceuil</a>
+
+	</div>
+{%  endblock %}
+{% block  crud %}
+	<div class="main-header">
+		<a class="menu-link-main" href="{{ path('app_entreprise_index') }}">Acceuil admin</a>
+		<div class="header-menu">
+			<a class="main-header-link" href="{{ path('app_entreprise_new') }}">Ajouter</a>
+			<a class="main-header-link" href="{{ path('app_entreprise_index') }}">Afficher</a>
+		</div>
+	</div>
+{% endblock %}
 
 {% block body %}
 	<h1>Entreprise</h1>
@@ -64,9 +79,13 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_entreprise_index') }}">back to list</a>
+	<button class="btn">
+		<a href="{{ path('app_entreprise_index') }}">back to list</a>
+	</button>
 
-	<a href="{{ path('app_entreprise_edit', {'idEntreprise': entreprise.idEntreprise}) }}">edit</a>
+	<button class="btn">
+		<a href="{{ path('app_entreprise_edit', {'idEntreprise': entreprise.idEntreprise}) }}">edit</a>
+	</button>
 
-	{{ include('entreprise/_delete_form.html.twig') }}
+	{{ include('Back/entreprise/_delete_form.html.twig') }}
 {% endblock %}

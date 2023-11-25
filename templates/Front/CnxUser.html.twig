@@ -1,4 +1,3 @@
-{% extends 'Front.html.twig' %}
 {% block style %}
 
 <!DOCTYPE html>
@@ -7,7 +6,26 @@
 		<title>Page title</title>
 
 		<style>
-
+			@font-face {
+				font-family: 'Lora';
+				font-style: normal;
+				font-weight: 400;
+				src: url('https://fonts.gstatic.com/s/lora/v32/0QI6MX1D_JOuGQbT0gvTJPa787weuxJBkqg.ttf') format('truetype');
+			}
+			@font-face {
+				font-family: 'Open Sans';
+				font-style: normal;
+				font-weight: 300;
+				font-stretch: normal;
+				src: url('https://fonts.gstatic.com/s/opensans/v36/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4gaVc.ttf') format('truetype');
+			}
+			@font-face {
+				font-family: 'Open Sans';
+				font-style: normal;
+				font-weight: 400;
+				font-stretch: normal;
+				src: url('https://fonts.gstatic.com/s/opensans/v36/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4gaVc.ttf') format('truetype');
+			}
 
 			body {
 				background: #b3ffcc;
@@ -93,7 +111,7 @@
 				font-family: 'Open Sans', sans-serif;
 				font-size: 0.7em;
 				letter-spacing: 2px;
-				color: #6C778B;
+				color: #8E9AAF;
 				text-align: center;
 			}
 
@@ -194,7 +212,64 @@
 			label {
 				font-family: 'Open Sans', sans-serif;
 				color: #7DAF9C;
-				font-size: 0 .
+				font-size: 0;
+			}
+
+			.arrow {
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				background-color: #ccc;
+				transition: transform 0.3s ease;
+			}
+
+			.left .arrow {
+				top: 50%;
+				left: -10px;
+				transform-origin: center right;
+			}
+
+			.right .arrow {
+				top: 50%;
+				right: -10px;
+				transform-origin: center left;
+			}
+
+			.arrow:hover {
+				transform: rotate(90deg);
+			}
+			.button:hover {
+				background: linear-gradient(45deg, #27A77C, #00b300);
+				box-shadow: 0 0 10px #00ff00;
+				color: #fff;
+			}
+			.button::before,
+			.button::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				width: 20px;
+				background-color: #27A77C;
+				transition: transform 0.3s ease;
+			}
+
+			.button::before {
+				left: -20px;
+				transform-origin: right center;
+			}
+
+			.button::after {
+				right: -20px;
+				transform-origin: left center;
+			}
+
+			.button:hover::before {
+				transform: translateX(-100%) rotate(180deg);
+			}
+
+			.button:hover::after {
+				transform: translateX(100%) rotate(180deg);
 			}
 		</style>
 	</head>
@@ -204,45 +279,39 @@
 		<div class="welcome">
 			<div class="pinkbox">
 				<div class="signup nodisplay">
-					<h1>Sign in
-					</h1>
-					<form autocomplete="off">
-						<input type="text" placeholder="username">
-						<input type="email" placeholder="email">
-						<input type="password" placeholder="password">
-						<input type="password" placeholder="confirm password">
-						<button class="button submit" onclick="loginAction()">cree un compte
-						</button>
-					</form>
+					<h1>register</h1>
 				</div>
-				<div class=" signin">
+				<div class="signin">
 					<h1>sign in</h1>
-					<form class="more-padding" autocomplete="off">
-						<input type="text" placeholder="username">
-						<input type="password" placeholder="password">
+					<form class="more-padding" autocomplete="off" action="{{ path('app_user_cnx') }}" method="POST">
+						<input type="text" placeholder="username" name="username" required>
+						<input
+						type="password" placeholder="password" name="password" required>
+						<!--	<button class="button submit" type="submit">login</button> -->
+						<a href="{{ path('app_user_profile' , {'idUser': "134"}) }}" class="button">login</a>
 
-
-						<button class="button submit">login</button>
 					</form>
 				</div>
 			</div>
 			<div class="leftbox">
 				<h2 class="title">
-					<span>FOR GREENER</span><br>INDUSTRY</h2>
-				<p class="desc">pour une meilleur<span>economie</span>
+					<span>FORE GREENER</span>&<br>INDUSTRY</h2>
+				<p class="desc">For a better
+					<span>green economie</span>
 				</p>
 				<img class="flower smaller" src="https://image.ibb.co/d5X6pn/1357d638624297b.jpg" alt="1357d638624297b" border="0">
-				<p class="account">Vous avez un compte?</p>
-				<button class="button" id="signin">se connecter</button>
+				<p class="account">have an account?</p>
+				<a href="{{ path('app_user_profile' , {'idUser': "134"}) }}" class="button">login</a>
+
+				<!-- <button class="button"  id="signin">login</button>  -->
 			</div>
 			<div class="rightbox">
 				<h2 class="title">
-					<span>FOR GREENER</span><br>INDUSTRY</h2>
-				<p class="desc">pour une meilleur
-					<span>economie</span>
+					<span>GREENER</span>&<br>INDUSTRY</h2>
+				<p class="desc">For a better<span>green economie</span>
 				</p>
 				<img class="flower" src="https://preview.ibb.co/jvu2Un/0057c1c1bab51a0.jpg"/>
-				<p class="account">vous n'avez pas de compte?</p>
+				<p class="account">don't have an account?</p>
 				<button class="button" id="signup">sign up</button>
 			</div>
 		</div>
@@ -266,4 +335,4 @@ signup.classList.add('nodisplay');
 signin.classList.remove('nodisplay');
 });
 	</script>
-</html></head></html>{% endblock%}
+</html></html></head></html>{% endblock%}

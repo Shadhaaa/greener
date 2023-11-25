@@ -4,43 +4,59 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
     #[ORM\Id]
-
     #[ORM\Column(type: "integer")]
     private ?int $idUser = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\NotBlank(message: "Le nom ne peut pas être vide")]
+
+    #[Assert\Length(max: 20, maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\NotBlank(message: "Le prénom ne peut pas être vide")]
+
+    #[Assert\Length(max: 20, maxMessage: "Le prénom ne peut pas dépasser {{ limit }} caractères")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 200, nullable: true)]
     private ?string $pdp = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message: "Le numéro ne peut pas être vide")]
+
+    #[Assert\Type(type: "integer", message: "Le numéro doit être un entier")]
     private ?int $num;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\NotBlank(message: "L'adresse e-mail ne peut pas être vide")]
+
+    #[Assert\Email(message: "L'adresse e-mail n'est pas valide")]
     private ?string $mail;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(min: 6, minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères")]
     private ?string $mdp1;
 
     #[ORM\Column(length: 25, nullable: true)]
     private ?string $role;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100, maxMessage: "L'adresse ne peut pas dépasser {{ limit }} caractères")]
     private ?string $adresse;
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $genre;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(max: 20, maxMessage: "Le champ investisseurInv ne peut pas dépasser {{ limit }} caractères")]
     private ?string $investisseurInv = null;
 
     public function getIdUser(): ?int
