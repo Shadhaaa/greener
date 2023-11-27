@@ -12,8 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\EntrepriseRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-
-
 #[Route('/entreprise')]
 class EntrepriseController extends AbstractController
 {
@@ -50,10 +48,11 @@ class EntrepriseController extends AbstractController
     #[Route('/{idEntreprise}', name: 'app_entreprise_show', methods: ['GET'])]
     public function show(Entreprise $entreprise): Response
     {
-        return $this->render('entreprise/show.html.twig', [
+        return $this->render('Back/entreprise/show.html.twig', [
             'entreprise' => $entreprise,
         ]);
     }
+    //editer admin 
     #[ParamConverter("entreprise")]
 
     #[Route('/{idEntreprise}/edit', name: 'app_entreprise_edit', methods: ['GET', 'POST'])]
@@ -74,7 +73,7 @@ class EntrepriseController extends AbstractController
         ]);
     }
     #[ParamConverter("entreprise")]
-
+    //delete 
     #[Route('/{idEntreprise}', name: 'app_entreprise_delete', methods: ['POST'])]
     public function delete(Request $request, Entreprise $entreprise, EntityManagerInterface $entityManager): Response
     {
@@ -85,13 +84,33 @@ class EntrepriseController extends AbstractController
 
         return $this->redirectToRoute('app_entreprise_index', [], Response::HTTP_SEE_OTHER);
     }
-    //entreprise frint 
+    //entreprise front 
     #[ParamConverter("entreprise")]
-    #[Route('/profileentr/{idEntreprise}', name: 'app_entreprise_profile', methods: ['GET'])]
+    #[Route('/profile/{idEntreprise}', name: 'app_entreprise_profile', methods: ['GET'])]
     public function profileentr(Entreprise $entreprise): Response
     {
         return $this->render('Front/entreprise/entrHome.html.twig', [
             'entreprise' => $entreprise
+        ]);
+    }
+
+    #[Route('/Entredit/{idEntreprise}', name: 'app_entreprise_Meedit', methods: ['GET', 'POST'])]
+    public function Meedit(Request $request, Entreprise $entreprise, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(Entreprise1Type::class, $entreprise);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_entreprise_profile', [
+                'idEntreprise' => $entreprise->getIdEntreprise()
+            ]);
+        }
+
+        return $this->renderForm('Front/entreprise/edit.html.twig', [
+            'entreprise' => $entreprise,
+            'form' => $form,
         ]);
     }
 }

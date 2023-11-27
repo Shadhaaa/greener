@@ -7,7 +7,7 @@
 <div class="header-menu">
 	<a class="menu-link is-active" href="{{ path('app_entreprise_profile', {'idEntreprise': entreprise.idEntreprise}) }}">Acceuil</a>
 	<a class="menu-link" href="#">Decouvrir</a>
-	<a class="menu-link notify" href="#">nos contact</a>
+	<a class="menu-link notify" href="{{ path('app_user_contact')}}">nos contact</a>
 </div>
 {% endblock%}
 
@@ -67,6 +67,12 @@
 							<path d="M471.854 338.281V163.146H296.72v41.169a123.1 123.1 0 01121.339 122.939c0 3.717-.176 7.393-.5 11.027zM172.14 327.254a123.16 123.16 0 01100.59-120.915L195.082 73.786 40.146 338.281H172.64c-.325-3.634-.5-7.31-.5-11.027z"/>
 						</svg>
 						les evenments
+					</a>
+					<a href="#">
+						<svg viewbox="0 0 512 512" fill="currentColor">
+							<path d="M499.377 46.402c-8.014-8.006-18.662-12.485-29.985-12.613a41.13 41.13 0 00-.496-.003c-11.142 0-21.698 4.229-29.771 11.945L198.872 275.458c25.716 6.555 47.683 23.057 62.044 47.196a113.544 113.544 0 0110.453 23.179L500.06 106.661C507.759 98.604 512 88.031 512 76.89c0-11.507-4.478-22.33-12.623-30.488zM176.588 302.344a86.035 86.035 0 00-3.626-.076c-20.273 0-40.381 7.05-56.784 18.851-19.772 14.225-27.656 34.656-42.174 53.27C55.8 397.728 27.795 409.14 0 416.923c16.187 42.781 76.32 60.297 115.752 61.24 1.416.034 2.839.051 4.273.051 44.646 0 97.233-16.594 118.755-60.522 23.628-48.224-5.496-112.975-62.192-115.348z"/>
+						</svg>
+						mes investissments
 					</a>
 
 					<a href="#">
@@ -151,6 +157,9 @@
 		</table>
 
 		<button class="btn">
-			<a href="{{ path('app_entreprise_entredit', {'idEntreprise': entreprise.idEntreprise}) }}">edit</a>
+			<a href="{{ path('app_entreprise_Meedit', {'idEntreprise': entreprise.idEntreprise}) }}">edit</a>
+		</button>
+		<button class="btn">
+			<a href="{{ path('app_user_cnx') }}">deconnecter</a>
 		</button>
 	{% endblock %}

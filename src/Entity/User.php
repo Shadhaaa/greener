@@ -2,39 +2,66 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\InMemoryUser;
+use Symfony\Component\Security\Core\User\InMemoryUserProvider;
+use Symfony\Component\Security\Core\User\InMemoryUserChecker;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\InMemoryUserProviderInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUser;
+use Symfony\Component\Security\Core\User\EquatableTrait;
+
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use PhpParser\Node\Expr\Cast\String_;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     #[ORM\Id]
-
     #[ORM\Column(type: "integer")]
     private ?int $idUser = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\NotBlank(message: "Le nom ne peut pas être vide")]
+
+    #[Assert\Length(max: 20, maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\NotBlank(message: "Le prénom ne peut pas être vide")]
+
+    #[Assert\Length(max: 20, maxMessage: "Le prénom ne peut pas dépasser {{ limit }} caractères")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 200, nullable: true)]
     private ?string $pdp = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message: "Le numéro ne peut pas être vide")]
+
+    #[Assert\Type(type: "integer", message: "Le numéro doit être un entier")]
     private ?int $num;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\NotBlank(message: "L'adresse e-mail ne peut pas être vide")]
+
+    #[Assert\Email(message: "L'adresse e-mail n'est pas valide")]
     private ?string $mail;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(min: 6, minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères")]
     private ?string $mdp1;
 
     #[ORM\Column(length: 25, nullable: true)]
     private ?string $role;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100, maxMessage: "L'adresse ne peut pas dépasser {{ limit }} caractères")]
     private ?string $adresse;
 
     #[ORM\Column(length: 20, nullable: true)]
@@ -42,6 +69,63 @@ class User
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $investisseurInv = null;
+
+
+    public function isEqualTo(UserInterface $user): bool
+    {
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        if ($this->getIdUser() !== $user->getIdUser()) {
+            return false;
+        }
+
+        // Comparez ici les autres propriétés de votre classe User pour déterminer si elles sont égales
+
+        // Exemple de comparaison du nom d'utilisateur
+        if ($this->getUsername() !== $user->getUsername()) {
+            return false;
+        }
+
+        // Exemple de comparaison des rôles
+        if ($this->getRoles() !== $user->getRoles()) {
+            return false;
+        }
+
+        // Si toutes les comparaisons précédentes sont réussies, les objets sont égaux
+        return true;
+    }
+    public function getUsername(): string
+    {
+        // Retourne le nom d'utilisateur (ici, nous utilisons l'adresse e-mail comme nom d'utilisateur)
+        return $this->mail ?? '';
+    }
+    public function getUserIdentifier()
+    {
+        return $this->getIdUser();
+    }
+    public function getRoles(): array
+    {
+        // Retourne les rôles de l'utilisateur sous forme de tableau
+        return [$this->role ?? 'ROLE_USER'];
+    }
+    public function getPassword(): string
+    {
+        // Retourne le mot de passe de l'utilisateur
+        return $this->mdp1 ?? '';
+    }
+    public function getSalt(): ?string
+    {
+        // Retourne le sel utilisé pour encoder le mot de passe (peut être null)
+        return null;
+    }
+    public function eraseCredentials(): void
+    {
+        // Supprime les données sensibles liées à l'authentification de l'utilisateur
+        $this->mdp1 = null;
+    }
+
 
     public function getIdUser(): ?int
     {

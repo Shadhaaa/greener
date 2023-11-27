@@ -12,6 +12,7 @@ class Entreprise1Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+
             ->add('nom')
             ->add('prenom')
             ->add('pdp')
@@ -24,8 +25,7 @@ class Entreprise1Type extends AbstractType
             ->add('logo')
             ->add('nomEntreprise')
             ->add('secteur')
-            ->add('description')
-        ;
+            ->add('description');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

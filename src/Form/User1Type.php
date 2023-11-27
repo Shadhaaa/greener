@@ -32,9 +32,8 @@ class User1Type extends AbstractType
                     'femme' => 'femme',
                     'homme' => 'homme',
 
-                ],
-            ])
-            ->add('investisseurInv');
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
