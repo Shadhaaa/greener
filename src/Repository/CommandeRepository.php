@@ -20,6 +20,17 @@ class CommandeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commande::class);
     }
+   
+
+    public function countCommandesByClientId(int $clientId): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.commandeId)')
+            ->andWhere('c.clientId = :clientId')
+            ->setParameter('clientId', $clientId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
 //    /**
 //     * @return Commande[] Returns an array of Commande objects
