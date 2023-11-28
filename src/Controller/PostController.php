@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Service\NotificationService;
 
 
 
@@ -26,6 +28,8 @@ class PostController extends AbstractController
             'posts' => $postRepository->findAll(),
         ]);
     }
+
+    
 
 // front user : 
     #[Route('/user', name: 'app_post_user', methods: ['GET'])]
@@ -45,8 +49,10 @@ class PostController extends AbstractController
         ]);
     }
 
+    
+
     #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, NotificationService $notificationService): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
@@ -65,6 +71,8 @@ class PostController extends AbstractController
             
             $entityManager->persist($post);
             $entityManager->flush();
+
+            $notificationService->sendNewPostNotification($post);
 
             return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -194,18 +202,5 @@ class PostController extends AbstractController
         ]);
     }
 
-    /*#[Route('/user/{idPost}', name: 'app_comments_show_by_post', methods: ['GET'])]
-public function showCommentsByPost($idPost, Post $post): Response
-{
-    // Fetch comments related to the specified post
-    $commentaires = $post->getCommentaires();
-
-    return $this->render('Front/user/showCmnt_by_post.html.twig', [
-        'commentaires' => $commentaires,
-    ]);
-}*/
-
-
-
-
+    
 }

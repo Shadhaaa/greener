@@ -6,6 +6,7 @@ use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @extends ServiceEntityRepository<Post>
  *
@@ -38,6 +39,28 @@ class PostRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
+
+    public function searchPosts(string $searchTerm): array
+{
+    return $this->createQueryBuilder('p')
+        ->where('p.titre LIKE :searchTerm')
+        ->orWhere('p.typedecontenu LIKE :searchTerm')
+        ->orWhere('p.contenu LIKE :searchTerm')
+        ->orWhere('p.date LIKE :searchTerm')
+        ->orWhere('p.image LIKE :searchTerm')
+        // Add more fields as needed
+        ->setParameter('searchTerm', '%' . $searchTerm . '%')
+        ->getQuery()
+        ->getResult();
+}
+
+
+
+
+
+
 
     
 

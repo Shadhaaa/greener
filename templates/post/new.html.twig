@@ -9,6 +9,13 @@
     
 
     <a href="{{ path('app_post_index') }}">back to list</a>
+
+    {# Display a simple notification about the new post #}
+{% for message in app.flashes('success') %}
+    <div class="notification">
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}
 {% endblock %}
 
 

@@ -12,7 +12,9 @@ class CommentairesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('idUser')
+        ->add('idUser', null, [
+            'data' => 1, // Set the default value to 1 for idUser
+        ])
             ->add('idPost')
             ->add('contenu')
             ->add('statut')
