@@ -31,6 +31,19 @@ class CommandeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    public function searchCommandes(string $searchTerm): array
+{
+    return $this->createQueryBuilder('c')
+        ->where('c.dateCommande LIKE :searchTerm')
+        ->orWhere('c.montantTotal LIKE :searchTerm')
+        ->orWhere('c.adresseLivraison LIKE :searchTerm')
+        ->orWhere('c.dateLivraison LIKE :searchTerm')
+        ->orWhere('c.modePaiement LIKE :searchTerm')
+        // Add more fields as needed
+        ->setParameter('searchTerm', '%' . $searchTerm . '%')
+        ->getQuery()
+        ->getResult();
+    }  
 
 //    /**
 //     * @return Commande[] Returns an array of Commande objects
@@ -56,4 +69,4 @@ class CommandeRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
+} 
