@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 
+
 /**
  * @extends ServiceEntityRepository<Commentaires>
  *
@@ -30,6 +31,8 @@ class CommentairesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    
 //    /**
 //     * @return Commentaires[] Returns an array of Commentaires objects
 //     */

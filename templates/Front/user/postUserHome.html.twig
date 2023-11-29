@@ -3,6 +3,7 @@
 {% block title %}mon profile {% endblock %}
 
 
+
 {% block sidebar %}
 
 	<div class="wrapper">
@@ -112,7 +113,7 @@
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">{{ post.date ? post.date|date('Y-m-d') : '' }}</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">{{ post.image }}</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">
-                            <a href="{{ path('app_post_show', {'idPost': post.idPost}) }}" >Show</a>
+                            {#<a href="{{ path('app_post_show', {'idPost': post.idPost}) }}" >Show</a>#}
 							<a href="{{ path('app_commentaires_new1', {'idPost': post.idPost}) }}">Add Comment</a>
                             <a href="{{ path('app_comments_show_by_post', {'idPost': post.idPost}) }}" >View Comments</a>
                         </td>

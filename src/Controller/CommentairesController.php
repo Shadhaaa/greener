@@ -12,6 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\BadWordsFilter;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 
 
@@ -35,78 +38,91 @@ class CommentairesController extends AbstractController
         ]);
     }
 
+    
+
     #[Route('/{idPost}/new-comment', name: 'app_commentaires_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, $idPost, EntityManagerInterface $entityManager): Response
-    {
-        $post = $entityManager->getRepository(Post::class)->find($idPost);
+public function new(Request $request, $idPost, EntityManagerInterface $entityManager, BadWordsFilter $badWordsFilter): Response
+{
+    $post = $entityManager->getRepository(Post::class)->find($idPost);
 
-        if (!$post) {
-            throw $this->createNotFoundException('The post does not exist');
-        }
-
-        $commentaire = new Commentaires();
-        $commentaire->setIdPost($idPost); // Set the ID of the post for the comment
-
-        $form = $this->createForm(CommentairesType::class, $commentaire);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $commentaire->setPost($post); // Set the post for the comment
-            $entityManager->persist($commentaire);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('commentaires/new.html.twig', [
-            'commentaire' => $commentaire,
-            'form' => $form,
-        ]);
+    if (!$post) {
+        throw $this->createNotFoundException('The post does not exist');
     }
 
-    /*#[Route('/new', name: 'app_commentaires_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $commentaire = new Commentaires();
-        $form = $this->createForm(CommentairesType::class, $commentaire);
-        $form->handleRequest($request);
+    $commentaire = new Commentaires();
+    $commentaire->setIdPost($idPost); // Set the ID of the post for the comment
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-            $entityManager->persist($commentaire);
-            $entityManager->flush();
+    $form = $this->createForm(CommentairesType::class, $commentaire);
+    $form->handleRequest($request);
 
-            return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Check if the comment contains inappropriate content
+        $containsBadWords = $badWordsFilter->containsBadWords($commentaire->getContenu());
+
+        if ($containsBadWords) {
+            // The comment contains inappropriate content
+            return $this->render('commentaires/inappropriate_comment.html.twig');
         }
 
-        return $this->renderForm('commentaires/new.html.twig', [
-            'commentaire' => $commentaire,
-            'form' => $form,
-        ]);
-    }*/
-    
-// front user
-    /*#[Route('/user/new', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
-    public function new1(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $commentaire = new Commentaires();
-        $form = $this->createForm(CommentairesType::class, $commentaire);
-        $form->handleRequest($request);
+        // If the comment doesn't contain inappropriate content, proceed to save it
+        $commentaire->setPost($post); // Set the post for the comment
+        $commentaire->setStatut('approved'); // Set status as approved
+        $entityManager->persist($commentaire);
+        $entityManager->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($commentaire);
-            $entityManager->flush();
+        return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
+    }
 
-            return $this->redirectToRoute('app_commentaires_user', [], Response::HTTP_SEE_OTHER);
+    return $this->render('commentaires/new.html.twig', [
+        'commentaire' => $commentaire,
+        'form' => $form->createView(),
+        'statut' => $commentaire->getStatut(),
+    ]);
+}
+
+
+#[Route('/user/{idPost}/new-comment', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
+public function new1(Request $request, $idPost, EntityManagerInterface $entityManager, BadWordsFilter $badWordsFilter): Response
+{
+    $post = $entityManager->getRepository(Post::class)->find($idPost);
+
+    if (!$post) {
+        throw $this->createNotFoundException('The post does not exist');
+    }
+
+    $commentaire = new Commentaires();
+    $commentaire->setIdPost($idPost); // Set the ID of the post for the comment
+
+    $form = $this->createForm(CommentairesType::class, $commentaire);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Check if the comment contains inappropriate content
+        $containsBadWords = $badWordsFilter->containsBadWords($commentaire->getContenu());
+
+        if ($containsBadWords) {
+            // The comment contains inappropriate content
+            return $this->render('Front/user/inappropriate_comment.html.twig');
         }
 
-        return $this->renderForm('Front/user/newCmntUser.html.twig', [
-            'commentaire' => $commentaire,
-            'form' => $form,
-        ]);
-    }*/
+        // If the comment doesn't contain inappropriate content, proceed to save it
+        $commentaire->setPost($post); // Set the post for the comment
+        $commentaire->setStatut('approved'); // Set status as approved
+        $entityManager->persist($commentaire);
+        $entityManager->flush();
 
-    #[Route('/user/{idPost}/new-comment', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
+        return $this->redirectToRoute('app_commentaires_user', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('Front/user/newCmntUser.html.twig', [
+        'commentaire' => $commentaire,
+        'form' => $form->createView(),
+        'statut' => $commentaire->getStatut(),
+    ]);
+}
+   
+
+    /*#[Route('/user/{idPost}/new-comment', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
     public function new1(Request $request, $idPost, EntityManagerInterface $entityManager): Response
     {
         $post = $entityManager->getRepository(Post::class)->find($idPost);
@@ -133,7 +149,7 @@ class CommentairesController extends AbstractController
             'commentaire' => $commentaire,
             'form' => $form,
         ]);
-    }
+    }*/
 
     #[Route('/{idCommentaire}', name: 'app_commentaires_show', methods: ['GET'])]
     public function show(Commentaires $commentaire): Response
@@ -144,13 +160,13 @@ class CommentairesController extends AbstractController
     }
 
 // front user
-    #[Route('/user/{idCommentaire}', name: 'app_commentaires_show1', methods: ['GET'])]
+   /* #[Route('/user/{idCommentaire}', name: 'app_commentaires_show1', methods: ['GET'])]
     public function show1(Commentaires $commentaire): Response
     {
         return $this->render('Front/user/showCmntUser.html.twig', [
             'commentaire' => $commentaire,
         ]);
-    }
+    }*/
 
     #[Route('/{idCommentaire}/edit', name: 'app_commentaires_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
@@ -200,6 +216,7 @@ class CommentairesController extends AbstractController
         return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
     }
 // front user
+
     #[Route('/user/{idCommentaire}', name: 'app_commentaires_delete1', methods: ['POST'])]
     public function delete1(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
     {
@@ -223,5 +240,48 @@ class CommentairesController extends AbstractController
             'comments' => $comments,
         ]);
     }
+
+
+     /*#[Route('/new', name: 'app_commentaires_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $commentaire = new Commentaires();
+        $form = $this->createForm(CommentairesType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager->persist($commentaire);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_commentaires_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('commentaires/new.html.twig', [
+            'commentaire' => $commentaire,
+            'form' => $form,
+        ]);
+    }*/
+    
+// front user
+    /*#[Route('/user/new', name: 'app_commentaires_new1', methods: ['GET', 'POST'])]
+    public function new1(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $commentaire = new Commentaires();
+        $form = $this->createForm(CommentairesType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($commentaire);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_commentaires_user', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('Front/user/newCmntUser.html.twig', [
+            'commentaire' => $commentaire,
+            'form' => $form,
+        ]);
+    }*/
 
 }

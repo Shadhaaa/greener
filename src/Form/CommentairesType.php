@@ -17,7 +17,7 @@ class CommentairesType extends AbstractType
         ])
             ->add('idPost')
             ->add('contenu')
-            ->add('statut')
+            //->add('statut')
         ;
     }
 

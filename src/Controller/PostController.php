@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Service\NotificationService;
+
 
 
 
@@ -28,8 +28,6 @@ class PostController extends AbstractController
             'posts' => $postRepository->findAll(),
         ]);
     }
-
-    
 
 // front user : 
     #[Route('/user', name: 'app_post_user', methods: ['GET'])]
@@ -52,14 +50,14 @@ class PostController extends AbstractController
     
 
     #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, NotificationService $notificationService): Response
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            $post->setIdEntreprise(1);
             $imageFile = $form->get('image')->getData();
             if ($imageFile instanceof UploadedFile) {
                 // If you want to use the same image path without moving it
@@ -72,7 +70,7 @@ class PostController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
-            $notificationService->sendNewPostNotification($post);
+            
 
             return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -121,6 +119,8 @@ class PostController extends AbstractController
             'post' => $post,
         ]);
     }
+
+    
 
     // front entreprise
     #[Route('/entreprise/{idPost}', name: 'app_post_showE', methods: ['GET'])]

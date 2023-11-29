@@ -7,5 +7,13 @@
 
     {{ include('commentaires/_form.html.twig') }}
 
+    <div id="comment-status-message">
+        {% if statut == 'not_approved' %}
+            <p>This comment contains inappropriate content and cannot be approved. Please modify it.</p>
+        {% elseif statut == 'approved' %}
+            <p>Your comment has been submitted and is awaiting approval.</p>
+        {% endif %}
+    </div>
+
     <a href="{{ path('app_commentaires_index') }}">back to list</a>
 {% endblock %}

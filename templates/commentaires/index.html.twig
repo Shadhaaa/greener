@@ -12,7 +12,7 @@
                 <th>IdUser</th>#}
                 <th>IdPost</th>
                 <th>Contenu</th>
-                <th>Statut</th>
+                {#<th>Statut</th>#}
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,7 +23,7 @@
                 <td>{{ commentaire.idUser }}</td>#}
                 <td>{{ commentaire.idPost }}</td>
                 <td>{{ commentaire.contenu }}</td>
-                <td>{{ commentaire.statut }}</td>
+                {#<td>{{ commentaire.statut }}</td>#}
                 <td>
                     <a href="{{ path('app_commentaires_show', {'idCommentaire': commentaire.idCommentaire}) }}">show</a>
                     <a href="{{ path('app_commentaires_edit', {'idCommentaire': commentaire.idCommentaire}) }}">edit</a>

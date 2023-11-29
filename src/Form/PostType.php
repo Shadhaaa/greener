@@ -14,7 +14,7 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('idEntreprise')
+            //->add('idEntreprise')
             ->add('titre')
             ->add('typedecontenu', ChoiceType::class, [
                 'choices' => [

@@ -56,13 +56,18 @@ class PostRepository extends ServiceEntityRepository
         ->getResult();
 }
 
+public function getPostsWithCommentCount(): array
+{
+    return $this->createQueryBuilder('p')
+        ->select('p.idPost, p.titre, COUNT(c.idCommentaire) as commentCount')
+        ->leftJoin('App\Entity\Commentaires', 'c', 'WITH', 'c.idPost = p.idPost')
+        ->groupBy('p.idPost')
+        ->getQuery()
+        ->getResult();
+}
 
 
 
-
-
-
-    
 
 //    /**
 //     * @return Post[] Returns an array of Post objects
