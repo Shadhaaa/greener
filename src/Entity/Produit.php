@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
 {
@@ -24,10 +23,6 @@ class Produit
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $productionMentuelle = null;
 
@@ -53,6 +48,18 @@ class Produit
 
     #[ORM\Column]
     private ?float $distanceVehicule = null;
+    #[Vich\UploadableField(mapping: 'images', fileNameProperty: 'imageName', size: 'imageSize')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $imageName = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function getIdProduit(): ?int
     {
         return $this->id;
@@ -93,18 +100,6 @@ class Produit
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     public function getProductionMentuelle(): ?int
     {
         return $this->productionMentuelle;
@@ -136,8 +131,13 @@ class Produit
 
     public function setPollutionParPiece(?float $pollutionParPiece): static
     {
+        /*$typener=$this->getTypeEnergie();
+        $typveh=$this->getTypeVehicule();
+        $ener=$typener->getPollutionParKw();
+        $veh=$typveh->getPollutioParKm();
+        $pol= (($this->getConsommationrnEnergie()*$ener)+($this->getDistanceVehicule()*$veh))/$this->getProductionMentuelle();
+        $this->pollutionParPiece = $pol;*/
         $this->pollutionParPiece = $pollutionParPiece;
-
         return $this;
     }
 
@@ -210,5 +210,40 @@ class Produit
         $this->distanceVehicule = $distanceVehicule;
 
         return $this;
+    }
+
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageSize(?int $imageSize): void
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
     }
 }

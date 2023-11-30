@@ -17,7 +17,7 @@ class Categorie
     #[ORM\Column(length: 255)]
     private ?string $libellet = null;
 
-    public function getIdCategorie(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }

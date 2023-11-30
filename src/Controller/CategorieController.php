@@ -18,7 +18,7 @@ class CategorieController extends AbstractController{
     #[Route('/showCategorie', name: 'app_categorie_index', methods: ['GET'])]
     public function index(CategorieRepository $categorieRepository): Response
     {
-        return $this->render('Categorie/index.html.twig', [
+        return $this->render('Back/Categorie/index.html.twig', [
             'Categories' => $categorieRepository->findAll(),
         ]);
     }
@@ -34,7 +34,7 @@ class CategorieController extends AbstractController{
         return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    return $this->renderForm('Categorie/new.html.twig', [
+    return $this->renderForm('Back/Categorie/new.html.twig', [
         'categorie' => $categorie,
         'form' => $form,
     ]);
@@ -53,7 +53,7 @@ class CategorieController extends AbstractController{
             return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('Categorie/_edit.html.twig', [
+        return $this->renderForm('Back/Categorie/_edit.html.twig', [
             'categorie' => $idCategorie,
             'form' => $form,
         ]);

@@ -10341,7 +10341,15 @@
 										<script src="assets/js/skel.min.js"></script>
 										<script src="assets/js/util.js"></script>
 										<script src="assets/js/main.js"></script>
+										<script src="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/js/axentix.min.js"></script>
 									</body>
+						<script src="https://cdn.jsdelivr.net/npm/axentix@0.5.3/dist/js/axentix.min.js"></script>
+        {% block javascripts %}
+        <script>
+            let drop = new Axentix.Dropdown('#dropdown')
+        </script>
+        {% endblock %}
+        <script src="{{ asset('js/scripts.js') }}"></script>
 								</html>
 							</body>
 						</div>
@@ -10405,6 +10413,9 @@
 		<div class="overlay-app"></div>
 	</html>
 </html></div><script>
+
+
+
 $(function () {
 $(".menu-link").click(function () {
 $(".menu-link").removeClass("is-active");
@@ -11167,3 +11178,5 @@ $header.addClass('reveal');
 });
 
 })(jQuery);</script>
+
+

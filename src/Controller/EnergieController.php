@@ -18,7 +18,7 @@ class EnergieController extends AbstractController{
     #[Route('/showEnergie', name: 'app_energie_index', methods: ['GET'])]
     public function index(EnergieRepository $energieRepository): Response
     {
-        return $this->render('Energie/index.html.twig', [
+        return $this->render('Back/Energie/index.html.twig', [
             'Energies' => $energieRepository->findAll(),
         ]);
     }
@@ -35,7 +35,7 @@ class EnergieController extends AbstractController{
         return $this->redirectToRoute('app_energie_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    return $this->renderForm('energie/new.html.twig', [
+    return $this->renderForm('Back/energie/new.html.twig', [
         'energie' => $energie,
         'form' => $form,
     ]);
@@ -54,7 +54,7 @@ class EnergieController extends AbstractController{
             return $this->redirectToRoute('app_energie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('Energie/_edit.html.twig', [
+        return $this->renderForm('Back/Energie/_edit.html.twig', [
             'energie' => $idEnergie,
             'form' => $form,
         ]);

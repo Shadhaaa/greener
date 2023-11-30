@@ -18,8 +18,8 @@ class VehiculeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {   
         $builder
-            ->add('Libellet', TextType::class, [
-                'label' => 'LibelletVehicule',
+            ->add('LibelletVehicule', TextType::class, [
+                'label' => 'Libellet',
                 'constraints' => [
                     new NotBlank(['message' => 'Libellet should not be blank']),
                     new Type(['type' => 'string', 'message' => 'Libellet should be a valid string']),
@@ -47,7 +47,6 @@ class VehiculeType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('save', SubmitType::class)
         ;
     }
 

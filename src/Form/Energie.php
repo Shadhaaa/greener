@@ -40,7 +40,6 @@ class EnergieType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('save', SubmitType::class)
         ;
     }
 

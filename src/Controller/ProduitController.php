@@ -18,15 +18,28 @@ use App\Service\VehiculeManager;
 use App\Form\ProductSearchType;
 use App\Repository\CategorieRepository;
 use App\Repository\EnergieRepository;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 class ProduitController extends AbstractController{
 
     
     #[Route('/showProduit', name: 'app_produit_index', methods: ['GET'])]
-    public function index(ProduitRepository $produitRepository,VehiculeRepository $vehiculeRepository): Response
+    public function index(ProduitRepository $produitRepository,CategorieRepository $categorieRepository , Request $request): Response
     {
-        return $this->render('Produit/index.html.twig', [
+        
+
+        $filters = $request->get("Categorie");
+
+        $Produits = $produitRepository->findAll();
+        
+if($request->get('ajax')){
+    return new JsonResponse([
+        'content' => $this->renderView('Front/Produit/index.html.twig', compact('Produits'))
+    ]);
+}
+
+        return $this->render('Front/Produit/index.html.twig', [
             'results' => $produitRepository->findAll(),
+            'categories' => $categorieRepository->findAll(),
         ]);
     }
 
@@ -37,35 +50,46 @@ class ProduitController extends AbstractController{
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            dd($data);
             $results = $productRepository->searchByCriteria($data['category'], $data['energie']);
         } else {
             $results = "plat";
         }
 
-        return $this->render('Produit/search.html.twig', [
+        return $this->render('Front/Produit/search.html.twig', [
             'form' => $form->createView(),
             'Categories' =>$categorieRepository ->findAll() ,
             'Energies' =>$energieRepository ->findAll() ,
             'results' => $results,
         ]);
     }
-
+    
     #[Route('/newprod', name: 'app_produit_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, ManagerRegistry $manager): Response{
     $produit = new Produit();
     $form = $this->createForm(ProduitType::class, $produit);
     $form->handleRequest($request);
     if ($form->isSubmitted() && $form->isValid()) {
+        $typener=$produit->getTypeEnergie();
+        $typveh=$produit->getTypeVehicule();
+        $ener=$typener->getPollutionParKw();
+        $veh=$typveh->getPollutioParKm();
+        $pol= (($produit->getConsommationrnEnergie()*$ener)+($produit->getDistanceVehicule()*$veh))/$produit->getProductionMentuelle();
+        $produit->setPollutionParPiece($pol);
+        //dd($produit);
         $entityManager->persist($produit);
         $entityManager->flush();
-
         return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    return $this->renderForm('produit/new.html.twig', [
+    
+    
+    
+    return $this->renderForm('Front/produit/new.html.twig', [
+        
         'produit' => $produit,
         'form' => $form,
     ]);
+    
     }
 
 
@@ -76,12 +100,13 @@ class ProduitController extends AbstractController{
         $form = $this->createForm(ProduitType::class, $idProduit);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('Produit/_edit.html.twig', [
+        return $this->renderForm('Front/Produit/_edit.html.twig', [
             'produit' => $idProduit,
             'form' => $form,
         ]);

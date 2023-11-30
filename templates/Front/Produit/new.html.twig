@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Produit{% endblock %}
+
+{% block body %}
+    <h1>Create new Produit</h1>
+
+    {{ include('Front/Produit/_form.html.twig') }}
+    <table>
+        <tr>
+            <td><a href="{{ path('app_produit_index') }}"<a href="{{ path('app_produit_new') }}"style="display: inline-block; padding: 8px 16px; border: none; border-radius: 4px; transition: all 0.3s ease; text-decoration: none; color: #fff; background-color: #3498db; margin-right: 5px;">back to list</a></td>
+        </tr>
+    </table>
+{% endblock %}

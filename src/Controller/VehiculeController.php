@@ -18,7 +18,7 @@ class VehiculeController extends AbstractController{
     #[Route('/showVehicule', name: 'app_vehicule_index', methods: ['GET'])]
     public function index(VehiculeRepository $vehiculeRepository): Response
     {
-        return $this->render('Vehicule/index.html.twig', [
+        return $this->render('Back/Vehicule/index.html.twig', [
             'Vehicules' => $vehiculeRepository->findAll(),
         ]);
     }
@@ -34,7 +34,7 @@ class VehiculeController extends AbstractController{
         return $this->redirectToRoute('app_vehicule_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    return $this->renderForm('vehicule/new.html.twig', [
+    return $this->renderForm('Back/vehicule/new.html.twig', [
         'vehicule' => $vehicule,
         'form' => $form,
     ]);
@@ -53,7 +53,7 @@ class VehiculeController extends AbstractController{
             return $this->redirectToRoute('app_vehicule_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('Vehicule/_edit.html.twig', [
+        return $this->renderForm('Back/Vehicule/_edit.html.twig', [
             'vehicule' => $idVehicule,
             'form' => $form,
         ]);

@@ -46,20 +46,17 @@ class ProduitRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-public function searchByCriteria($category, $energie)
-{
-    $qb = $this->createQueryBuilder('p');
 
-    if ($category) {
-        $qb->andWhere('p.Category = :category')
-           ->setParameter('category', $category);
+
+public function findByCategorie( $categorie = null){
+    $query = $this->createQueryBuilder('a');
+    $query->where('a.active = 1');
+    if($categorie != null){
+        $query->leftJoin('a.categories', 'c');
+        $query->andWhere('c.id = :id')
+            ->setParameter('id', $categorie);
     }
-
-    if ($energie) {
-        $qb->andWhere('p.typeEnergie = :energie')
-           ->setParameter('energie', $energie);
-    }
-
-    return $qb->getQuery()->getResult();
+    return $query->getQuery()->getResult();
 }
+
 }

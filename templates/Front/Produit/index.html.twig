@@ -4,10 +4,17 @@
 
 {% block body %}
     <h1>Produit index</h1>
-    
 
+    <p1>Recherche</p1>
+    <form id="filters">
+        {%for c in categories%}
+            <p><input type = "checkbox" name = "categories[]" id = "cat{{c.id}}" value = "{{c.id}}"><label for = "cat{{c.id}}">{{c.libellet}}</label></p>
+        {%endfor%}
+
+    </form>
+    <div id = "content">
     <table class="table">
-        <thead>
+        <thead >
             <tr>
                 <th>Libellet</th>
                 <th>Image</th>
@@ -27,7 +34,7 @@
             {% for P in results %}
                 <tr>
                     <td>{{P.libelletProduit}}</td>
-                    <td><img src=P.image></td>
+                    <td><img src="{{asset('images/' ~ P.imageName)}}" width="100" height="100"></td>
                     <td>{{P.categorie.libellet}}</td>
                     <td>{{P.prix}}</td>
                     <td>{{P.stockActuelle}}</td>
@@ -39,7 +46,7 @@
                     <td>{{P.description}}</td>
                     <td>{{P.pollutionParPiece}}</td>
                     <td>
-                        <a href="{{ path('app_produit_edit', {'idProduit': P.idProduit}) }}">edit</a>
+                        <a href="{{ path('app_produit_edit', {'idProduit': P.idProduit}) }}"style="display: inline-block; padding: 8px 16px; border: none; border-radius: 4px; transition: all 0.3s ease; text-decoration: none; color: #fff; background-color: #3498db; margin-right: 5px;">Edit/Delete</a>
                     </td>
                 </tr>
                 {%else%}
@@ -49,5 +56,14 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('app_produit_new') }}">Create new</a>
+    <table>
+    </div>
+        <tr>
+            <td><a href="{{ path('app_produit_new') }}"style="display: inline-block; padding: 8px 16px; border: none; border-radius: 4px; transition: all 0.3s ease; text-decoration: none; color: #fff; background-color: #3498db; margin-right: 5px;">Create new</a></td>
+        </tr>
+    </table>
+    {% block javascript %}
+        <script src = "{{asset('js/filter.js')}}"></script>
+    {%endblock%}
 {% endblock %}
+
