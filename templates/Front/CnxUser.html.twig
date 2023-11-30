@@ -283,14 +283,12 @@
 				</div>
 				<div class="signin">
 					<h1>se connecter</h1>
-					<form class="more-padding" method="post" action="{{ path('app_user_cnx') }}">
-						<input type="text" placeholder="username" name="username">
-						<input type="password" placeholder="password" name="password">
-
+					<form method="post" action="{{ path('app_user_cnx') }}">
+						<input type="text" placeholder="username" name="nom">
+						<input type="password" placeholder="password" name="mdp">
+						<button type="submit">connecter a</button>
 					</form>
-					<a href="{{ path('app_user_index') }}">
-						<button class="button submit">connecter a</button>
-					</a>
+					<a href="{{ path('app_user_index') }}"></a>
 					<br>
 					<br>
 
@@ -329,6 +327,7 @@
 			</div>
 		</div>
 	</div>
+
 	<script>
 		var signupBtn = document.getElementById('signup');
 var signinBtn = document.getElementById('signin');

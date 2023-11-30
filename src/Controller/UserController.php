@@ -58,8 +58,13 @@ class UserController extends AbstractController
     {
         $user = new User();
         if ($request->isMethod('POST')) {
-            $email = $request->request->get('username');
-            $password = $request->request->get('password');
+            $email = $request->request->get('nom');
+            $password = $request->request->get('mdp');
+            var_dump($email);
+            var_dump($password);
+
+
+            die();
 
             if ($email === "admin" && $password === "admin") {
                 return $this->redirectToRoute('app_user_index');
