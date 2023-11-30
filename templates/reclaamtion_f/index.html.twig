@@ -1,0 +1,40 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Reclamation index{% endblock %}
+{% block heading %}Reclamation{% endblock %}
+
+{% block body %}
+
+<section id="recent-posts" class="recent-posts">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+
+        <div class="section-header">
+            <h2>Recent Reclamation Posts</h2>
+            <a href="{{ path('app_reclaamtion_f_new') }}" style="font-size: 30px;margin-bottom: 200px;">Create new</a>
+
+        </div>
+
+        <div class="row gy-5">        {% for reclamation in reclamations %}
+            <div class="col-xl-3 col-md-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <div class="post-box">
+{#                     <div class="post-img"><img src="{{  asset('uploads/images/products/'  ~ reclamation.image) }}" class="img-fluid" alt=""></div>
+ #}                    <div class="meta">
+                        <span class="post-date">{{ reclamation.dateCreation ? reclamation.dateCreation|date('Y-m-d') : '' }}</span>
+                        <span class="post-author"> / {{ reclamation.nom }} {{ reclamation.prenom }}</span>
+                    </div>
+                    <h3 class="post-title">{{ reclamation.status }}</h3>
+                    <p>{{ reclamation.description }}</p>
+                    <a href="{{ path('app_reclaamtion_f_show', {'idreclamation': reclamation.idreclamation}) }}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+        {% else %}
+
+        {% endfor %}
+        </div>
+
+    </div>
+
+    </div>
+</section>
+
+{% endblock %}

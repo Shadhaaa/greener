@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reclamation index
+{% endblock %}
+{% block heading %}Reclamation
+{% endblock %}
+
+{% block body %}
+	<div class="container position-relative aos-init aos-animate" data-aos="fade-up">
+
+		<h1>Reclamation</h1>
+		<div class="row">
+			<div class="">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title">
+							<strong>Listes des dossiers réclamation</strong>
+						</h5>
+
+						<div class="card-tools">
+
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<div class="btn-group"></div>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+
+						</div>
+					</div>
+					<div class="card-body">
+
+						<div
+							class="row">
+							<!-- /.col -->
+							<div class="">
+								<table class="table" id="example1">
+									<thead>
+										<tr>
+											<th>Idreclamation</th>
+											<th>Nom</th>
+											<th>Prenom</th>
+											<th>Email</th>
+											{#                 <th>Images</th>
+											                <th>Screenshot</th> #}
+											<th>NumeroMobile</th>
+											<th>DateCreation</th>
+											<th>DateTraitement</th>
+											<th>Description</th>
+											<th>Status</th>
+											<th>Nomservcie</th>
+											<th>actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for reclamation in reclamations %}
+											<tr>
+												<td>{{ reclamation.idreclamation }}</td>
+												<td>{{ reclamation.nom }}</td>
+												<td>{{ reclamation.prenom }}</td>
+												<td>{{ reclamation.email }}</td>
+												{#                 <td><img src={{  asset('uploads/images/products/'  ~ reclamation.image) }} width="100%"></td>
+												
+												                <td>{{ reclamation.screenshot }}</td> #}
+												<td>{{ reclamation.numeroMobile }}</td>
+												<td>{{ reclamation.dateCreation ? reclamation.dateCreation|date('Y-m-d') : '' }}</td>
+												<td>{{ reclamation.dateTraitement ? reclamation.dateTraitement|date('Y-m-d') : '' }}</td>
+												<td>{{ reclamation.description }}</td>
+												<td>{{ reclamation.status }}</td>
+												<td>{{ reclamation.nomservcie }}</td>
+												<td>
+													<a href="{{ path('app_reclamation_show', {'idreclamation': reclamation.idreclamation}) }}">show</a>
+													<a href="{{ path('app_reclamation_edit', {'idreclamation': reclamation.idreclamation}) }}">edit</a>
+													<button id ="a" class="btn" style="background:deepskyblue">
+													                        <a  style="color: #FFFFFF" >mail</a>
+													                    </button>
+												</td>
+											</tr>
+										{% else %}
+											<tr>
+												<td colspan="12">no records found</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+
+
+								<a href="{{ path('app_reclamation_new') }}">Create new</a>
+
+
+								<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+								<script>
+									$('#a').on('click', function () {
+
+
+                                    $.ajax({
+                                    method: "POST",
+                                    url: "http://127.0.0.1:8000/reclamation/mail",
+                                    data: {
+                                    email: "eya@esprit.tn",
+                                    body: "Mr/Mm ,votre reclamation etait consultez par nous"
+                                    }
+                                    }).done(function (msg) {
+                                    if (msg == "true") {
+                                    alert(" votre mail est bien recus! ");
+                                    window.location.replace("http://127.0.0.1:8000/reclamation");
+
+                                    }
+                                    })
+                                    });
+								</script>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block js %}
+
+	<!-- jQuery -->
+	<script src="../../plugins/jquery/jquery.min.js"></script>
+	<!-- Bootstrap 4 -->
+	<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- DataTables  & Plugins -->
+	<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="../../plugins/jszip/jszip.min.js"></script>
+	<script src="../../plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="../../plugins/pdfmake/vfs_fonts.js"></script>
+	<script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+	<script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="../../dist/js/adminlte.min.js"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="../../dist/js/demo.js"></script>
+	<!-- Page specific script -->
+	<script>
+		$(function () {
+$("#example1").DataTable({
+"responsive": true,
+"lengthChange": false,
+"autoWidth": false,
+"buttons": [
+"copy",
+"csv",
+"excel",
+"pdf",
+"print",
+"colvis"
+]
+}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+$('#example2').DataTable({
+"paging": true,
+"lengthChange": false,
+"searching": false,
+"ordering": true,
+"info": true,
+"autoWidth": false,
+"responsive": true
+});
+});
+	</script>
+{% endblock %}

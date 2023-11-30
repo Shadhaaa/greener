@@ -1,0 +1,15 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}New Avis
+{% endblock %}
+{% block heading %}Nouveau Avis{% endblock %}
+
+{% block body %}
+	<div class="container aos-init aos-animate" data-aos="fade-up">
+		<h1>Create new Avis</h1>
+
+		{{ include('avi_f/_form.html.twig') }}
+
+		<a href="{{ path('app_avi_f_index') }}">back to list</a>
+	</div>
+{% endblock %}

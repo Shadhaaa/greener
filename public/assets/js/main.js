@@ -1,416 +1,197 @@
-$(function () {
-    $(".menu-link").click(function () {
-    $(".menu-link").removeClass("is-active");
-    $(this).addClass("is-active");
+/**
+* Template Name: Nova - v1.2.1
+* Template URL: https://bootstrapmade.com/nova-bootstrap-business-template/
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
+document.addEventListener('DOMContentLoaded', () => {
+  "use strict";
+
+  /**
+   * Preloader
+   */
+  const preloader = document.querySelector('#preloader');
+  if (preloader) {
+    window.addEventListener('load', () => {
+      preloader.remove();
     });
+  }
+
+  /**
+   * Sticky header on scroll
+   */
+  const selectHeader = document.querySelector('#header');
+  if (selectHeader) {
+    document.addEventListener('scroll', () => {
+      window.scrollY > 100 ? selectHeader.classList.add('sticked') : selectHeader.classList.remove('sticked');
     });
-    
-    $(function () {
-    $(".main-header-link").click(function () {
-    $(".main-header-link").removeClass("is-active");
-    $(this).addClass("is-active");
-    });
-    });
-    
-    const dropdowns = document.querySelectorAll(".dropdown");
-    dropdowns.forEach((dropdown) => {
-    dropdown.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdowns.forEach((c) => c.classList.remove("is-active"));
-    dropdown.classList.add("is-active");
-    });
-    });
-    
-    $(".search-bar input").focus(function () {
-    $(".header").addClass("wide");
-    }).blur(function () {
-    $(".header").removeClass("wide");
-    });
-    
-    $(document).click(function (e) {
-    var container = $(".status-button");
-    var dd = $(".dropdown");
-    if (! container.is(e.target) && container.has(e.target).length === 0) {
-    dd.removeClass("is-active");
+  }
+
+  /**
+   * Mobile nav toggle
+   */
+  const mobileNavShow = document.querySelector('.mobile-nav-show');
+  const mobileNavHide = document.querySelector('.mobile-nav-hide');
+
+  document.querySelectorAll('.mobile-nav-toggle').forEach(el => {
+    el.addEventListener('click', function(event) {
+      event.preventDefault();
+      mobileNavToogle();
+    })
+  });
+
+  function mobileNavToogle() {
+    document.querySelector('body').classList.toggle('mobile-nav-active');
+    mobileNavShow.classList.toggle('d-none');
+    mobileNavHide.classList.toggle('d-none');
+  }
+
+  /**
+   * Toggle mobile nav dropdowns
+   */
+  const navDropdowns = document.querySelectorAll('.navbar .dropdown > a');
+
+  navDropdowns.forEach(el => {
+    el.addEventListener('click', function(event) {
+      if (document.querySelector('.mobile-nav-active')) {
+        event.preventDefault();
+        this.classList.toggle('active');
+        this.nextElementSibling.classList.toggle('dropdown-active');
+
+        let dropDownIndicator = this.querySelector('.dropdown-indicator');
+        dropDownIndicator.classList.toggle('bi-chevron-up');
+        dropDownIndicator.classList.toggle('bi-chevron-down');
+      }
+    })
+  });
+
+  /**
+   * Scroll top button
+   */
+  const scrollTop = document.querySelector('.scroll-top');
+  if (scrollTop) {
+    const togglescrollTop = function() {
+      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
     }
-    });
-    
-    $(function () {
-    $(".dropdown").on("click", function (e) {
-    $(".content-wrapper").addClass("overlay");
-    e.stopPropagation();
-    });
-    $(document).on("click", function (e) {
-    if ($(e.target).is(".dropdown") === false) {
-    $(".content-wrapper").removeClass("overlay");
-    }
-    });
-    });
-    
-    $(function () {
-    $(".status-button:not(.open)").on("click", function (e) {
-    $(".overlay-app").addClass("is-active");
-    });
-    $(".pop-up .close").click(function () {
-    $(".overlay-app").removeClass("is-active");
-    });
-    });
-    
-    $(".status-button:not(.open)").click(function () {
-    $(".pop-up").addClass("visible");
-    });
-    
-    $(".pop-up .close").click(function () {
-    $(".pop-up").removeClass("visible");
-    });
-    
-    const toggleButton = document.querySelector('.dark-light');
-    
-    toggleButton.addEventListener('click', () => {
-    document.body.classList.toggle('light-mode');
-    });
-    <!-- script home admin -->
-    /*
-        Hielo by TEMPLATED
-        templated.co @templatedco
-        Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
-    */
-    
-    var settings = {
-    
-    banner: { // Indicators (= the clickable dots at the bottom).
-    indicators: true,
-    
-    // Transition speed (in ms)
-    // For timing purposes only. It *must* match the transition speed of "#banner > article".
-    speed: 1500,
-    
-    // Transition delay (in ms)
-    delay: 5000,
-    
-    // Parallax intensity (between 0 and 1; higher = more intense, lower = less intense; 0 = off)
-    parallax: 0.25
-    
-    }
-    
-    };
-    
-    (function ($) {
-    
-    skel.breakpoints({
-    xlarge: '(max-width: 1680px)',
-    large: '(max-width: 1280px)',
-    medium: '(max-width: 980px)',
-    small: '(max-width: 736px)',
-    xsmall: '(max-width: 480px)'
-    });
-    
-    /**
-         * Applies parallax scrolling to an element's background image.
-         * @return {jQuery} jQuery object.
-         */
-    $.fn._parallax = (skel.vars.browser == 'ie' || skel.vars.mobile) ? function () {
-    return $(this)
-    } : function (intensity) {
-    
-    var $window = $(window),
-    $this = $(this);
-    
-    if (this.length == 0 || intensity === 0) 
-    return $this;
-    
-    
-    
-    if (this.length > 1) {
-    
-    for (var i = 0; i < this.length; i++) 
-    $(this[i])._parallax(intensity);
-    
-    
-    
-    return $this;
-    
-    }
-    
-    if (! intensity) 
-    intensity = 0.25;
-    
-    
-    
-    $this.each(function () {
-    
-    var $t = $(this),
-    on,
-    off;
-    
-    on = function () {
-    
-    $t.css('background-position', 'center 100%, center 100%, center 0px');
-    
-    $window.on('scroll._parallax', function () {
-    
-    var pos = parseInt($window.scrollTop()) - parseInt($t.position().top);
-    
-    $t.css('background-position', 'center ' + (
-    pos * (-1 * intensity)
-    ) + 'px');
-    
-    });
-    
-    };
-    
-    off = function () {
-    
-    $t.css('background-position', '');
-    
-    $window.off('scroll._parallax');
-    
-    };
-    
-    skel.on('change', function () {
-    
-    if (skel.breakpoint('medium').active) 
-    (off)();
-     else 
-    (on)();
-    
-    
-    
-    });
-    
-    });
-    
-    $window.off('load._parallax resize._parallax').on('load._parallax resize._parallax', function () {
-    $window.trigger('scroll');
-    });
-    
-    return $(this);
-    
-    };
-    
-    /**
-         * Custom banner slider for Slate.
-         * @return {jQuery} jQuery object.
-         */
-    $.fn._slider = function (options) {
-    
-    var $window = $(window),
-    $this = $(this);
-    
-    if (this.length == 0) 
-    return $this;
-    
-    
-    
-    if (this.length > 1) {
-    
-    for (var i = 0; i < this.length; i++) 
-    $(this[i])._slider(options);
-    
-    
-    
-    return $this;
-    
-    }
-    
-    // Vars.
-    var current = 0,
-    pos = 0,
-    lastPos = 0,
-    slides = [],
-    indicators = [],
-    $indicators,
-    $slides = $this.children('article'),
-    intervalId,
-    isLocked = false,
-    i = 0;
-    
-    // Turn off indicators if we only have one slide.
-    if ($slides.length == 1) 
-    options.indicators = false;
-    
-    
-    
-    // Functions.
-    $this._switchTo = function (x, stop) {
-    
-    if (isLocked || pos == x) 
-    return;
-    
-    
-    
-    isLocked = true;
-    
-    if (stop) 
-    window.clearInterval(intervalId);
-    
-    
-    
-    // Update positions.
-    lastPos = pos;
-    pos = x;
-    
-    // Hide last slide.
-    slides[lastPos].removeClass('top');
-    
-    if (options.indicators) 
-    indicators[lastPos].removeClass('visible');
-    
-    
-    
-    // Show new slide.
-    slides[pos].addClass('visible').addClass('top');
-    
-    if (options.indicators) 
-    indicators[pos].addClass('visible');
-    
-    
-    
-    // Finish hiding last slide after a short delay.
-    window.setTimeout(function () {
-    
-    slides[lastPos].addClass('instant').removeClass('visible');
-    
-    window.setTimeout(function () {
-    
-    slides[lastPos].removeClass('instant');
-    isLocked = false;
-    
-    }, 100);
-    
-    }, options.speed);
-    
-    };
-    
-    // Indicators.
-    if (options.indicators) 
-    $indicators = $('<ul class="indicators"></ul>').appendTo($this);
-    
-    
-    
-    // Slides.
-    $slides.each(function () {
-    
-    var $slide = $(this),
-    $img = $slide.find('img');
-    
-    // Slide.
-    $slide.css('background-image', 'url("' + $img.attr('src') + '")').css('background-position', ($slide.data('position') ? $slide.data('position') : 'center'));
-    
-    // Add to slides.
-    slides.push($slide);
-    
-    // Indicators.
-    if (options.indicators) {
-    
-    var $indicator_li = $('<li>' + i + '</li>').appendTo($indicators);
-    
-    // Indicator.
-    $indicator_li.data('index', i).on('click', function () {
-    $this._switchTo($(this).data('index'), true);
-    });
-    
-    // Add to indicators.
-    indicators.push($indicator_li);
-    
-    }
-    
-    i++;
-    
-    })._parallax(options.parallax);
-    
-    // Initial slide.
-    slides[pos].addClass('visible').addClass('top');
-    
-    if (options.indicators) 
-    indicators[pos].addClass('visible');
-    
-    
-    
-    // Bail if we only have a single slide.
-    if (slides.length == 1) 
-    return;
-    
-    
-    
-    // Main loop.
-    intervalId = window.setInterval(function () {
-    
-    current++;
-    
-    if (current >= slides.length) 
-    current = 0;
-    
-    
-    
-    $this._switchTo(current);
-    
-    }, options.delay);
-    
-    };
-    
-    $(function () {
-    
-    var $window = $(window),
-    $body = $('body'),
-    $header = $('#header'),
-    $banner = $('.banner');
-    
-    // Disable animations/transitions until the page has loaded.
-    $body.addClass('is-loading');
-    
-    $window.on('load', function () {
-    window.setTimeout(function () {
-    $body.removeClass('is-loading');
-    }, 100);
-    });
-    
-    // Prioritize "important" elements on medium.
-    skel.on('+medium -medium', function () {
-    $.prioritize('.important\\28 medium\\29', skel.breakpoint('medium').active);
-    });
-    
-    // Banner.
-    $banner._slider(settings.banner);
-    
-    // Menu.
-    $('#menu').append('<a href="#menu" class="close"></a>').appendTo($body).panel({
-    delay: 500,
-    hideOnClick: true,
-    hideOnSwipe: true,
-    resetScroll: true,
-    resetForms: true,
-    side: 'right'
-    });
-    
-    // Header.
-    if (skel.vars.IEVersion < 9) 
-    $header.removeClass('alt');
-    
-    
-    
-    if ($banner.length > 0 && $header.hasClass('alt')) {
-    
-    $window.on('resize', function () {
-    $window.trigger('scroll');
-    });
-    
-    $banner.scrollex({
-    bottom: $header.outerHeight(),
-    terminate: function () {
-    $header.removeClass('alt');
+    window.addEventListener('load', togglescrollTop);
+    document.addEventListener('scroll', togglescrollTop);
+    scrollTop.addEventListener('click', window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    }));
+  }
+
+  /**
+   * Initiate glightbox
+   */
+  const glightbox = GLightbox({
+    selector: '.glightbox'
+  });
+
+  /**
+   * Init swiper slider with 1 slide at once in desktop view
+   */
+  new Swiper('.slides-1', {
+    speed: 600,
+    loop: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false
     },
-    enter: function () {
-    $header.addClass('alt');
+    slidesPerView: 'auto',
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true
     },
-    leave: function () {
-    $header.removeClass('alt');
-    $header.addClass('reveal');
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
     }
-    });
-    
+  });
+
+  /**
+   * Init swiper slider with 3 slides at once in desktop view
+   */
+  new Swiper('.slides-3', {
+    speed: 600,
+    loop: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false
+    },
+    slidesPerView: 'auto',
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+      clickable: true
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      320: {
+        slidesPerView: 1,
+        spaceBetween: 40
+      },
+
+      1200: {
+        slidesPerView: 3,
+      }
     }
-    
+  });
+
+  /**
+   * Porfolio isotope and filter
+   */
+  let portfolionIsotope = document.querySelector('.portfolio-isotope');
+
+  if (portfolionIsotope) {
+
+    let portfolioFilter = portfolionIsotope.getAttribute('data-portfolio-filter') ? portfolionIsotope.getAttribute('data-portfolio-filter') : '*';
+    let portfolioLayout = portfolionIsotope.getAttribute('data-portfolio-layout') ? portfolionIsotope.getAttribute('data-portfolio-layout') : 'masonry';
+    let portfolioSort = portfolionIsotope.getAttribute('data-portfolio-sort') ? portfolionIsotope.getAttribute('data-portfolio-sort') : 'original-order';
+
+    window.addEventListener('load', () => {
+      let portfolioIsotope = new Isotope(document.querySelector('.portfolio-container'), {
+        itemSelector: '.portfolio-item',
+        layoutMode: portfolioLayout,
+        filter: portfolioFilter,
+        sortBy: portfolioSort
+      });
+
+      let menuFilters = document.querySelectorAll('.portfolio-isotope .portfolio-flters li');
+      menuFilters.forEach(function(el) {
+        el.addEventListener('click', function() {
+          document.querySelector('.portfolio-isotope .portfolio-flters .filter-active').classList.remove('filter-active');
+          this.classList.add('filter-active');
+          portfolioIsotope.arrange({
+            filter: this.getAttribute('data-filter')
+          });
+          if (typeof aos_init === 'function') {
+            aos_init();
+          }
+        }, false);
+      });
+
     });
-    
-    })(jQuery);
+
+  }
+
+  /**
+   * Animation on scroll function and init
+   */
+  function aos_init() {
+    AOS.init({
+      duration: 800,
+      easing: 'slide',
+      once: true,
+      mirror: false
+    });
+  }
+  window.addEventListener('load', () => {
+    aos_init();
+  });
+
+});
