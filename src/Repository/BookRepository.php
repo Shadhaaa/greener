@@ -31,7 +31,7 @@ class BookRepository extends ServiceEntityRepository
     public function maxID($value)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.idUser = :val')
+            ->andWhere('b.id = :val')
             ->setParameter('val', $value);
     }
 }

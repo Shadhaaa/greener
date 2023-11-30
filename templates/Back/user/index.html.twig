@@ -29,17 +29,17 @@
 					<td>{{ user.mdp1 }}</td>
 					<td>
 						<button class="btn">
-							<a href="{{ path('app_user_delete', {'idUser': user.idUser}) }}">supprimer</a>
+							<a href="{{ path('app_user_delete', {'idUser': user.id}) }}">supprimer</a>
 						</button>
 					</td>
 					<td>
 						<button class="btn">
-							<a href="{{ path('app_user_show', {'idUser': user.idUser}) }}">details</a>
+							<a href="{{ path('app_user_show', {'idUser': user.id}) }}">details</a>
 						</button>
 					</td>
 					<td>
 						<button class="btn">
-							<a href="{{ path('app_user_edit', {'idUser': user.idUser}) }}">editer</a>
+							<a href="{{ path('app_user_edit', {'idUser': user.id}) }}">editer</a>
 						</button>
 					</td>
 				</tr>

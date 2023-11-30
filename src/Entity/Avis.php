@@ -48,6 +48,4 @@ class Avis
      * @ORM\Column(name="idUser", type="integer", nullable=false)
      */
     private $iduser;
-
-
 }

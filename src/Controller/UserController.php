@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Entreprise;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 use App\Form\User1Type;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,86 +24,84 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class UserController extends AbstractController
 {
 
+    #[Route('/auth', name: 'app_auth')]
+    public function auth(): Response
+    {
+        $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return match ($user->isVerified()) {
+            true => $this->render("back/user/index.html.twig"),
+            false => $this->render("admin/verify.html.twig"),
+        };
+    }
     #[Route('/contact', name: 'app_user_contact', methods: ['GET'])]
     public function contact(): Response
     {
         return $this->render('Back/AdminHome.html.twig');
     }
 
-
-
-    #[Route('/cnx', name: 'app_user_cnx', methods: ['GET'])]
-    public function Cnx(Request $request, EntityManagerInterface $entityManager)
+    #[Route('/cnx1', name: 'app_user_cnx1')]
+    public function Cnx1(AuthenticationUtils $authenticationUtils): Response
     {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('Front/CnxUser1.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+    #[Route('/cnx', name: 'app_user_cnx')]
+    public function Cnx(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    {
+        $user = new User();
+        if ($request->isMethod('POST')) {
+            $email = $request->request->get('username');
+            $password = $request->request->get('password');
+
+            if ($email === "admin" && $password === "admin") {
+                return $this->redirectToRoute('app_user_index');
+            }
+            // Recherche parmi les user
+            $user = $entityManager->getRepository(User::class);
+            $user = $userRepository->findOneBy(['mail' => $email]);
 
 
-        $email = $request->request->get('email');
-        $password = $request->request->get('password');
-        if ($email == "admin" && $password == "admin") {
-            return $this->redirectToRoute('app_user_invprofile', ['id' => 140]);
-        }
-
-
-        return $this->render('Front/CnxUser.html.twig');
-
-
-        //return $this->redirectToRoute('app_user_profile', ['id' => 134]);
-
-
-        // return $this->redirectToRoute('app_user_invprofile', ['id' => 140]);
-        // return $this->redirectToRoute('app_entreprise_profile', ['id' => 9]);
-
-        /* $email = $request->request->get('email');
-        $password = $request->request->get('password');
-
-        // Recherche parmi les utilisateurs
-        $userRepository = $entityManager->getRepository(User::class);
-        $user = $userRepository->findOneBy(['mail' => $email]);
-
-        if ($email === 'admin' && $password === 'admin') {
-            // Redirection vers la page user_index pour le rôle admin
-            return $this->redirectToRoute('app_user_profile', ['id' => $user->getIdUser()]);
-        }
-        return $this->render('Front/CnxUser.html.twig');
-
-        
-       
-
-        // Recherche parmi les entreprises
-        $entrepriseRepository = $entityManager->getRepository(Entreprise::class);
-        $entreprise = $entrepriseRepository->findOneBy(['mail' => $email]);
-
-        if ($user instanceof User) {
-            // L'utilisateur existe et a été trouvé par son adresse e-mail
-            if (password_verify($password, $user->getMdp1())) {
-                // Le mot de passe correspond, redirection en fonction du rôle
-                if ($user->getRole() === 'CLIENT') {
-                    // Redirection vers l'interface Clienthome
-                    return $this->redirectToRoute('app_user_profile', ['id' => $user->getIdUser()]);
-                } elseif ($user->getRole() === 'INVESTISSEUR') {
-                    // Redirection vers l'interface Invhome
-                    return $this->redirectToRoute('app_user_invprofile', ['id' => $user->getIdUser()]);
+            if ($user instanceof User) {
+                // L'utilisateur existe et a été trouvé par son adresse e-mail
+                if (password_verify($password, $user->getMdp1())) {
+                    // Le mot de passe correspond, redirection en fonction du rôle
+                    if ($user->getRole() === 'CLIENT') {
+                        // Redirection vers l'interface Clienthome
+                        return $this->redirectToRoute('app_user_profile', ['id' => $user->getIdUser()]);
+                    } elseif ($user->getRole() === 'INVESTISSEUR') {
+                        // Redirection vers l'interface Invhome
+                        return $this->redirectToRoute('app_user_invprofile', ['id' => $user->getIdUser()]);
+                    }
+                } else {
+                    // Mot de passe incorrect
+                    $this->addFlash('error', 'Mot de passe incorrect.');
+                    return $this->redirectToRoute('app_user_cnx');
+                }
+            } elseif ($user instanceof Entreprise) {
+                // L'entreprise existe et a été trouvée par son adresse e-mail
+                if (password_verify($password, $user->getMdp1())) {
+                    // Le mot de passe correspond, redirection en fonction du rôle
+                    return $this->redirectToRoute('app_entreprise_profile', ['id' => $user->getidentreprise()]);
+                } else {
+                    // Mot de passe incorrect
+                    $this->addFlash('error', 'Mot de passe incorrect.');
+                    return $this->redirectToRoute('app_user_cnx');
                 }
             } else {
-                // Mot de passe incorrect
-                $this->addFlash('error', 'Mot de passe incorrect.');
+                // Pas d'e-mail trouvé
+                $this->addFlash('error', 'Pas d\'e-mail trouvé.');
                 return $this->redirectToRoute('app_user_cnx');
             }
-        } elseif ($entreprise instanceof Entreprise) {
-            // L'entreprise existe et a été trouvée par son adresse e-mail
-            if (password_verify($password, $entreprise->getMdp1())) {
-                // Le mot de passe correspond, redirection en fonction du rôle
-                return $this->redirectToRoute('app_entreprise_profile', ['id' => $user->getIdUser()]);
-            } else {
-                // Mot de passe incorrect
-                $this->addFlash('error', 'Mot de passe incorrect.');
-                return $this->redirectToRoute('app_user_cnx');
-            }
-        } else {
-            // Pas d'e-mail trouvé
-            $this->addFlash('error', 'Pas d\'e-mail trouvé.');
-            return $this->redirectToRoute('app_user_cnx');
-        }*/
+        }
+        return $this->renderForm('Front/CnxUser.html.twig');
     }
 
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
@@ -122,7 +121,7 @@ class UserController extends AbstractController
 
 
         $query = $userrepo->createQueryBuilder('a')
-            ->select('MAX(a.idUser) as max')
+            ->select('MAX(a.id) as max')
             ->getQuery();
         $result = $query->getSingleScalarResult();
 
@@ -153,10 +152,16 @@ class UserController extends AbstractController
     }
 
     #[Route('/{idUser}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(UserPasswordHasherInterface $passwordHasher, Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(User1Type::class, $user);
         $form->handleRequest($request);
+        $formData = $form->getData();
+
+        $password = $formData->getMdp1();
+
+        $user->setMdp1($passwordHasher->hashPassword($user, $password));
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
@@ -194,10 +199,17 @@ class UserController extends AbstractController
     }
     //edit profile
     #[Route('/{idUser}/Meedit', name: 'app_user_Meedit', methods: ['GET', 'POST'])]
-    public function Meedit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function Meedit(UserPasswordHasherInterface $passwordHasher, Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(User1Type::class, $user);
         $form->handleRequest($request);
+        $formData = $form->getData();
+
+        $password = $formData->getMdp1();
+
+        $user->setMdp1($passwordHasher->hashPassword($user, $password));
+
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();

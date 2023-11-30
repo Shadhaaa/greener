@@ -5524,8 +5524,7 @@
 			<div class="menu-circle"></div>
 			{%   block up%}
 			<div class="header-menu">
-				<a class="menu-link is-active" href="{{ path('app_user_profile' , {'idUser': user.idUser}) }}">Acceuil</a>
-				<a class="menu-link" href="#">about us</a>
+				<a class="menu-link is-active" href="{{ path('app_user_profile' , {'idUser': user.id}) }}">Acceuil</a>
 				<a class="menu-link notify" href="{{ path('app_user_contact')}}">nos contact</a>
 			</div>
 			{% endblock%}

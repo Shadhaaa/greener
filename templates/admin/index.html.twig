@@ -1,0 +1,14 @@
+{% block title %}Hello AdminController!
+{% endblock %}
+
+{% block body %}
+
+
+	<div class="example-wrapper">
+		hello
+		{{app.user.mail}}
+	</div>
+	<a href="{{ path('app_logout')}}">logout</a>
+
+
+{% endblock %}

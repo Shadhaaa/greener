@@ -5525,8 +5525,6 @@
 			{%   block up%}
 			<div class="header-menu">
 				<a class="menu-link is-active" href="{{ path('app_user_index') }}">Acceuil</a>
-				<a class="menu-link" href="#">Decouvrir</a>
-				<a class="menu-link notify" href="{{ path('app_user_contact')}}">nos contact</a>
 
 			</div>
 
@@ -5553,7 +5551,7 @@
 						<div class="side-title">Acceuil Initiale</div>
 						<div class="side-menu">
 
-							<a href="#">
+							<a href="{{path('gender_statistics')}}">
 								<svg viewbox="0 0 512 512">
 									<g xmlns="http://www.w3.org/2000/svg" fill="currentColor">
 										<path d="M0 0h128v128H0zm0 0M192 0h128v128H192zm0 0M384 0h128v128H384zm0 0M0 192h128v128H0zm0 0" data-original="#bfc9d1"/>
@@ -5561,7 +5559,17 @@
 									<path xmlns="http://www.w3.org/2000/svg" d="M192 192h128v128H192zm0 0" fill="currentColor" data-original="#82b1ff"/>
 									<path xmlns="http://www.w3.org/2000/svg" d="M384 192h128v128H384zm0 0M0 384h128v128H0zm0 0M192 384h128v128H192zm0 0M384 384h128v128H384zm0 0" fill="currentColor" data-original="#bfc9d1"/>
 								</svg>
-								Statistique
+								Statistique des genres
+							</a>
+							<a href="{{path('role_counts')}}">
+								<svg viewbox="0 0 512 512">
+									<g xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+										<path d="M0 0h128v128H0zm0 0M192 0h128v128H192zm0 0M384 0h128v128H384zm0 0M0 192h128v128H0zm0 0" data-original="#bfc9d1"/>
+									</g>
+									<path xmlns="http://www.w3.org/2000/svg" d="M192 192h128v128H192zm0 0" fill="currentColor" data-original="#82b1ff"/>
+									<path xmlns="http://www.w3.org/2000/svg" d="M384 192h128v128H384zm0 0M0 384h128v128H0zm0 0M192 384h128v128H192zm0 0M384 384h128v128H384zm0 0" fill="currentColor" data-original="#bfc9d1"/>
+								</svg>
+								Statistique des roles
 							</a>
 							<a href="{{ path('app_user_index') }}">
 								<svg viewbox="0 0 488.932 488.932" fill="currentColor">

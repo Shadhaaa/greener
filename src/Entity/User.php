@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -20,11 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['mail'], message: 'There is already an account with this mail')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: "integer")]
-    private ?int $idUser = null;
+    public ?int $id = null;
 
     #[ORM\Column(length: 20, nullable: true)]
     #[Assert\NotBlank(message: "Le nom ne peut pas être vide")]
@@ -51,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[Assert\NotBlank(message: "L'adresse e-mail ne peut pas être vide")]
 
     #[Assert\Email(message: "L'adresse e-mail n'est pas valide")]
-    private ?string $mail;
+    private ?string $mail = "";
 
     #[ORM\Column(length: 20, nullable: true)]
     #[Assert\Length(min: 6, minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères")]
@@ -69,6 +71,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $investisseurInv = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
 
 
     public function isEqualTo(UserInterface $user): bool
@@ -129,11 +134,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     public function getIdUser(): ?int
     {
-        return $this->idUser;
+        return $this->id;
     }
     public function setIdUser(?int $id): static
     {
-        $this->idUser = $id;
+        $this->id = $id;
         return $this;
     }
 
@@ -187,7 +192,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     public function getMail(): ?string
     {
-        return $this->mail;
+        return $this->mail ?? null;
     }
 
     public function setMail(?string $mail): static
@@ -253,6 +258,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function setInvestisseurInv(?string $investisseurInv): static
     {
         $this->investisseurInv = $investisseurInv;
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

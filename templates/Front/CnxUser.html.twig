@@ -283,15 +283,24 @@
 				</div>
 				<div class="signin">
 					<h1>se connecter</h1>
-					<form class="more-padding" autocomplete="off" action="{{ path('app_user_cnx') }}" method="POST">
-						<input type="text" placeholder="username" name="username" required>
-						<input
-						type="password" placeholder="password" name="password" required>
-						<!--	<button class="button submit" type="submit">login</button> -->
-						<a href="{{ path('app_user_profile' , {'idUser': "134"}) }}" class="button">login</a>
+					<form class="more-padding" method="post" action="{{ path('app_user_cnx') }}">
+						<input type="text" placeholder="username" name="username">
+						<input type="password" placeholder="password" name="password">
 
 					</form>
+					<a href="{{ path('app_user_index') }}">
+						<button class="button submit">connecter a</button>
+					</a>
+					<br>
+					<br>
+
+					<a class="more-padding" href="{{ path('app_forgot_password_request') }}">
+						mot de pass oubliee ?
+
+					</a>
+
 				</div>
+
 			</div>
 			<div class="leftbox">
 				<h2 class="title">
@@ -301,7 +310,8 @@
 				</p>
 				<img class="flower smaller" src="https://image.ibb.co/d5X6pn/1357d638624297b.jpg" alt="1357d638624297b" border="0">
 				<p class="account">vous avez un compte ?</p>
-				<a href="{{ path('app_user_profile' , {'idUser': "134"}) }}" class="button">login</a>
+				<button class="button" id="signup">
+					>se connecter a</button>
 
 				<!-- <button class="button"  id="signin">login</button>  -->
 			</div>
@@ -312,7 +322,7 @@
 				</p>
 				<img class="flower" src="https://preview.ibb.co/jvu2Un/0057c1c1bab51a0.jpg"/>
 				<p class="account">vous n'avez pas de compte ?</p>
-				<a href="{{ path('app_auth_register') }}">
+				<a href="{{ path('app_register') }}">
 
 					<button class="button" id="signin">cree compte</button>
 				</a>
