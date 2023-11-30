@@ -45,4 +45,19 @@ class EvenementRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function searchEvenements(string $searchTerm): array
+{
+    return $this->createQueryBuilder('p')
+        ->where('p.titreEvenement LIKE :searchTerm')
+        ->orWhere('p.dateEvenementt LIKE :searchTerm')
+        ->orWhere('p.lieuEvenement LIKE :searchTerm')
+        ->orWhere('p.qrcode LIKE :searchTerm')
+        ->orWhere('p.descriptionEvenement LIKE :searchTerm')
+        ->orWhere('p.imageEvenement LIKE :searchTerm')
+        // Add more fields as needed
+        ->setParameter('searchTerm', '%' . $searchTerm . '%')
+        ->getQuery()
+        ->getResult();
+}
+
 }

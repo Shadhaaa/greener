@@ -3,49 +3,65 @@
 {% block title %}Evenement index{% endblock %}
 
 {% block body %}
-    <h1>Evenement index</h1>
+        <h1 class="mb-4">Evenement Index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>IdEvenement</th>
-                <th>IdEntreprise</th>
-                <th>IdParticipant</th>
-                <th>TitreEvenement</th>
-                <th>DateEvenement</th>
-                <th>Qrcode</th>
-                <th>ImageEvenement</th>
-                <th>LieuEvenement</th>
-                <th>DescriptionEvenement</th>
-                <th>Liste_participants</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for evenement in evenements %}
-            <tr>
-                <td>{{ evenement.idEvenement }}</td>
-                <td>{{ evenement.idEntreprise }}</td>
-                <td>{{ evenement.idParticipant }}</td>
-                <td>{{ evenement.titreEvenement }}</td>
-                <td>{{ evenement.dateEvenement ? evenement.dateEvenement|date('Y-m-d') : '' }}</td>
-                <td>{{ evenement.qrcode }}</td>
-                <td>{{ evenement.imageEvenement }}</td>
-                <td>{{ evenement.lieuEvenement }}</td>
-                <td>{{ evenement.descriptionEvenement }}</td>
-                <td>{{ evenement.listeParticipants }}</td>
-                <td>
-                    <a href="{{ path('app_evenement_show', {'idEvenement': evenement.idEvenement}) }}">show</a>
-                    <a href="{{ path('app_evenement_edit', {'idEvenement': evenement.idEvenement}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Entreprise Email</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for evenement in evenements %}
+                    <tr style="color: {{ eventPassed ? 'red' : 'white' }}">
+                        <td>{{ evenement.id }}</td>
+                        <td><img src="{{ asset(evenement.imageEvenement) }}" width="80"></img></td>
+                        <td>{{ evenement.titreEvenement }}</td>
+                        <td>{{ evenement.entreprise.email }}</td>
+                        <td >
+                            {{ evenement.dateEvenementt ? evenement.dateEvenementt|date('Y-m-d') : '' }}
 
-    <a href="{{ path('app_evenement_new') }}">Create new</a>
+                        </td>
+                       
+                        <td> 
+                            {% if is_granted('ROLE_ENTREPRISE') %}
+                            <a href="{{ path('app_evenement_show', {'id': evenement.id}) }}"
+                                class="btn btn-primary btn-sm">Show</a>
+                                <a href="{{ path('app_evenement_edit', {'id': evenement.id}) }}"
+                                    class="btn btn-warning btn-sm">Edit</a>
+                            {% endif %}
+
+                            {% if evenement.entreprise == app.user %}
+                             
+                            {% else %}
+
+                            <form method="post" action="{{ path('app_evenement_participate', {'id': evenement.id}) }}">
+                                <button type="submit">Participate</button>
+                            </form>
+                              <!-- Add the download PDF link here -->
+
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_evenement_download_pdf') }}"
+                                class="btn btn-success btn-sm">Download PDF</a>
+
+        {% if is_granted('ROLE_ENTREPRISE') %}
+            <a href="{{ path('app_evenement_new') }}" class="btn btn-success">Create New</a>
+        {% endif %}
 {% endblock %}
+
+

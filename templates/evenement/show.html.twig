@@ -8,24 +8,20 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>IdEvenement</th>
-                <td>{{ evenement.idEvenement }}</td>
+                <th>id</th>
+                <td>{{ evenement.id }}</td>
             </tr>
             <tr>
-                <th>IdEntreprise</th>
-                <td>{{ evenement.idEntreprise }}</td>
-            </tr>
-            <tr>
-                <th>IdParticipant</th>
-                <td>{{ evenement.idParticipant }}</td>
+                <th>Entreprise email</th>
+                <td>{{ evenement.entreprise.email }}</td>
             </tr>
             <tr>
                 <th>TitreEvenement</th>
                 <td>{{ evenement.titreEvenement }}</td>
             </tr>
             <tr>
-                <th>DateEvenement</th>
-                <td>{{ evenement.dateEvenement ? evenement.dateEvenement|date('Y-m-d') : '' }}</td>
+                <th>DateEvenementt</th>
+                <td>{{ evenement.dateEvenementt ? evenement.dateEvenementt|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
                 <th>Qrcode</th>
@@ -33,7 +29,8 @@
             </tr>
             <tr>
                 <th>ImageEvenement</th>
-                <td>{{ evenement.imageEvenement }}</td>
+                <td><img src="{{ asset(evenement.imageEvenement) }}" width="80"></img></td>
+                {# <td>{{ evenement.imageEvenement }}</td> #}
             </tr>
             <tr>
                 <th>LieuEvenement</th>
@@ -43,16 +40,33 @@
                 <th>DescriptionEvenement</th>
                 <td>{{ evenement.descriptionEvenement }}</td>
             </tr>
-            <tr>
-                <th>Liste_participants</th>
-                <td>{{ evenement.listeParticipants }}</td>
-            </tr>
         </tbody>
     </table>
 
     <a href="{{ path('app_evenement_index') }}">back to list</a>
 
-    <a href="{{ path('app_evenement_edit', {'idEvenement': evenement.idEvenement}) }}">edit</a>
+    <a href="{{ path('app_evenement_edit', {'id': evenement.id}) }}">edit</a>
 
     {{ include('evenement/_delete_form.html.twig') }}
+
+
+    <h2>Participants</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <!-- Add more participant details as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for participant in evenement.participants %}
+                <tr>
+                    <td>{{ participant.id }}</td>
+                    <td>{{ participant.email }}</td>
+                    <!-- Add more participant details as needed -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

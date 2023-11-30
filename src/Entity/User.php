@@ -2,94 +2,194 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity
- */
-class User
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idUser;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $email = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nom", type="string", length=20, nullable=true)
+     * @var string The hashed password
      */
-    private $nom;
+    #[ORM\Column]
+    private ?string $password = null;
+
+    #[ORM\OneToMany(mappedBy: 'entreprise', targetEntity: Evenement::class)]
+    private Collection $evenements;
+
+    #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'participants')]
+    private Collection $participated_evenements;
+
+    public function __construct()
+    {
+        $this->evenements = new ArrayCollection();
+        $this->participated_evenements = new ArrayCollection();
+    }
+
+    public const ROLE_ENTREPRISE = 'ROLE_ENTREPRISE';
+    public const ROLE_INVESTISSEUR = 'ROLE_INVESTISSEUR';
+    public const ROLE_LIVREUR = 'ROLE_LIVREUR';
+    public const ROLE_USER = 'ROLE_USER';
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
 
     /**
-     * @var string|null
+     * A visual identifier that represents this user.
      *
-     * @ORM\Column(name="prenom", type="string", length=20, nullable=true)
+     * @see UserInterface
      */
-    private $prenom;
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="pdp", type="string", length=200, nullable=true)
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
      */
-    private $pdp;
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="num", type="integer", nullable=true)
+     * @see UserInterface
      */
-    private $num;
+    public function getRoles(): array
+    {
+        $roles = $this->roles ?? [];
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="mail", type="string", length=50, nullable=true)
+     * @see PasswordAuthenticatedUserInterface
      */
-    private $mail;
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
 
     /**
-     * @var string|null
+     * Returning a salt is only needed if you are not using a modern
+     * hashing algorithm (e.g., bcrypt or sodium) in your security.yaml.
      *
-     * @ORM\Column(name="mdp1", type="string", length=20, nullable=true)
+     * @see UserInterface
      */
-    private $mdp1;
+    public function getSalt(): ?string
+    {
+        return null;
+    }
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="role", type="string", length=25, nullable=true)
+     * @see UserInterface
      */
-    private $role;
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="adresse", type="string", length=100, nullable=true)
+     * @return Collection<int, Evenement>
      */
-    private $adresse;
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): static
+    {
+        if (!$this->evenements->contains($evenement)) {
+            $this->evenements->add($evenement);
+            $evenement->setEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvenement(Evenement $evenement): static
+    {
+        if ($this->evenements->removeElement($evenement)) {
+            // set the owning side to null (unless already changed)
+            if ($evenement->getEntreprise() === $this) {
+                $evenement->setEntreprise(null);
+            }
+        }
+
+        return $this;
+    }
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="genre", type="string", length=20, nullable=true)
+     * @return Collection<int, Evenement>
      */
-    private $genre;
+    public function getParticipatedEvenements(): Collection
+    {
+        return $this->participated_evenements;
+    }
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="investisseur_inv", type="text", length=0, nullable=true)
-     */
-    private $investisseurInv;
+    public function addParticipatedEvenement(Evenement $participatedEvenement): static
+    {
+        if (!$this->participated_evenements->contains($participatedEvenement)) {
+            $this->participated_evenements->add($participatedEvenement);
+            $participatedEvenement->addParticipant($this);
+        }
 
+        return $this;
+    }
 
+    public function removeParticipatedEvenement(Evenement $participatedEvenement): static
+    {
+        if ($this->participated_evenements->removeElement($participatedEvenement)) {
+            $participatedEvenement->removeParticipant($this);
+        }
+
+        return $this;
+    }
 }

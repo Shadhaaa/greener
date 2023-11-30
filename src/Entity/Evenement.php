@@ -2,42 +2,42 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use App\Repository\EvenementRepository;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
+#[Vich\Uploadable]
 class Evenement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idEvenement = null;
+    private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idEntreprise = null;
-    
-    #[ORM\Column]
-    private ?int $idParticipant = null;
+    /**
+     * @Vich\UploadableField(mapping="file_upload", fileNameProperty="image_file")
+     */
+    private ?File $image = null;
     
     #[ORM\Column(length: 500)]
     #[Assert\NotBlank(message: "vous devez mettre votre titre !!!")]
     private ?string $titreEvenement = null;
-   
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: "vous devez entrer la date !!!")]
-    #[Assert\Date\DateTime(message: "vous devez entrer la date !!!")]
-    private ?\DateTime $dateEvenement = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $dateEvenementt = null;
     
     #[ORM\Column(length: 500)]
     #[Assert\NotBlank(message: "vous devez mettre votre qrcode !!!")]
     private ?string $qrcode = null;
 
     #[ORM\Column(length: 500)]
-    #[Assert\NotBlank(message: "vous devez mettre votre lieu!!!")]
-    #[Assert\Url(message: "vous devez entrer une adresse URL valid !!!")]
     private ?string $imageEvenement = null;
 
     #[ORM\Column(length: 500)]
@@ -48,37 +48,21 @@ class Evenement
     #[Assert\NotBlank(message: "vous devez mettre votre description!!!")]
     private ?string $descriptionEvenement= null;
 
-    #[ORM\Column(length: 500)]
-    #[Assert\NotBlank(message: "vous devez mettre votre liste!!!")]
-    private ?string $liste_participants= null;
+    #[ORM\ManyToOne(inversedBy: 'evenements')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $entreprise = null;
 
-    public function getIdEvenement(): ?int
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'participated_evenements')]
+    private Collection $participants;
+
+    public function __construct()
     {
-        return $this->idEvenement;
+        $this->participants = new ArrayCollection();
     }
 
-    public function getIdEntreprise(): ?int
+    public function getId(): ?int
     {
-        return $this->idEntreprise;
-    }
-
-    public function setIdEntreprise(int $idEntreprise): static
-    {
-        $this->idEntreprise = $idEntreprise;
-
-        return $this;
-    }
-
-    public function getIdParticipant(): ?int
-    {
-        return $this->idParticipant;
-    }
-
-    public function setIdParticipant(int $idParticipant): static
-    {
-        $this->idParticipant = $idParticipant;
-
-        return $this;
+        return $this->id;
     }
 
     public function getTitreEvenement(): ?string
@@ -93,14 +77,14 @@ class Evenement
         return $this;
     }
 
-    public function getDateEvenement(): ?\DateTimeInterface
+    public function getDateEvenementt(): ?\DateTimeInterface
     {
-        return $this->dateEvenement;
+        return $this->dateEvenementt;
     }
 
-    public function setDateEvenement(\DateTimeInterface $dateEvenement): static
+    public function setDateEvenementt(\DateTimeInterface $dateEvenementt): static
     {
-        $this->dateEvenement = $dateEvenement;
+        $this->dateEvenementt = $dateEvenementt;
 
         return $this;
     }
@@ -153,14 +137,50 @@ class Evenement
         return $this;
     }
 
-    public function getListeParticipants(): ?string
+    public function getEntreprise(): ?User
     {
-        return $this->liste_participants;
+        return $this->entreprise;
     }
 
-    public function setListeParticipants(string $liste_participants): static
+    public function setEntreprise(?User $entreprise): static
     {
-        $this->liste_participants = $liste_participants;
+        $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getImage(): ?File
+    {
+        return $this->image;
+    }
+
+    public function setImage(?File $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(User $participant): static
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(User $participant): static
+    {
+        $this->participants->removeElement($participant);
 
         return $this;
     }

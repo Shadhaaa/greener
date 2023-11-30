@@ -22,17 +22,16 @@ class Investissement
     private ?int $idEntreprise = null;
   
     #[ORM\Column]
-    #[Assert\NotBlank(message: "vous devez entrer le montant !!!")]
     private ?float $montant = null;
 
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: "vous devez enter la date !!!")]
     private ?\DateTime $dateDebutInvestissement = null;
     
     #[ORM\Column(length: 500)]
     #[Assert\NotBlank(message: "vous devez mettre votre duree prevue!!!")]
     private ?string $dureePrevue = null;
+
 
     #[ORM\Column(length: 500)]
     #[Assert\NotBlank(message: "vous devez mettre votre details!!!")]
