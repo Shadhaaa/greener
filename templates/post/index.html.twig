@@ -4,10 +4,6 @@
 
 {% block body %}
 
-
-
-
-
     <h1 style="text-align: center; color: #555;">Posts</h1>
 
     
@@ -34,7 +30,13 @@
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">{{ post.typedecontenu }}</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">{{ post.contenu }}</td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">{{ post.date ? post.date|date('Y-m-d') : '' }}</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">{{ post.image }}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;">
+                        {% if post.image is not empty %}
+                        <img src="{{ asset('images/' ~ post.image) }}" alt="Post Image" style="max-width: 100px; height: auto;">
+                        {% else %}
+                        No Image
+                        {% endif %}
+                        </td>
                         <td style="padding: 12px; border-bottom: 1px solid #ddd;">
                             <a href="{{ path('app_post_show', {'idPost': post.idPost}) }}" style="display: inline-block; padding: 8px 16px; border: none; border-radius: 4px; transition: all 0.3s ease; text-decoration: none; color: #fff; background-color: #3498db; margin-right: 5px;">Show</a>
                             <a href="{{ path('app_post_edit', {'idPost': post.idPost}) }}" style="display: inline-block; padding: 8px 16px; border: none; border-radius: 4px; transition: all 0.3s ease; text-decoration: none; color: #fff; background-color: #27ae60;">Edit</a>

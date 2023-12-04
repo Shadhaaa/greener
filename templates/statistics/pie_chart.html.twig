@@ -11,11 +11,11 @@
     <script>
         const postCommentCounts = {{ postCommentCounts|json_encode|raw }};
 
-        // Process the data to create datasets for Chart.js
+        // create datasets 
         const postTitles = postCommentCounts.map(post => post.titre);
         const commentCounts = postCommentCounts.map(post => post.commentCount);
 
-        // Define different colors for each section
+        // colors for each section
         const colors = [
             'rgba(255, 99, 132, 0.5)',
             'rgba(54, 162, 235, 0.5)',

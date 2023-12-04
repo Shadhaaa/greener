@@ -160,13 +160,24 @@ public function new1(Request $request, $idPost, EntityManagerInterface $entityMa
     }
 
 // front user
-   /* #[Route('/user/{idCommentaire}', name: 'app_commentaires_show1', methods: ['GET'])]
+
+#[Route('/user/{idPost}', name: 'app_comments_show_by_post', methods: ['GET'])]
+public function showCommentsByPost($idPost, CommentairesRepository $commentairesRepository): Response
+{
+    // Fetch comments by post ID using the repository function
+    $comments = $commentairesRepository->findBy(['idPost' => $idPost]);
+
+    return $this->render('Front/user/showCmnt_by_post.html.twig', [
+        'comments' => $comments,
+    ]);
+}
+    #[Route('/userr/{idCommentaire}', name: 'app_commentaires_show1', methods: ['GET'])]
     public function show1(Commentaires $commentaire): Response
     {
         return $this->render('Front/user/showCmntUser.html.twig', [
             'commentaire' => $commentaire,
         ]);
-    }*/
+    }
 
     #[Route('/{idCommentaire}/edit', name: 'app_commentaires_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Commentaires $commentaire, EntityManagerInterface $entityManager): Response
@@ -230,16 +241,7 @@ public function new1(Request $request, $idPost, EntityManagerInterface $entityMa
 
     
     
-    #[Route('/user/{idPost}', name: 'app_comments_show_by_post', methods: ['GET'])]
-    public function showCommentsByPost($idPost, CommentairesRepository $commentairesRepository): Response
-    {
-        // Fetch comments by post ID using the repository function
-        $comments = $commentairesRepository->findBy(['idPost' => $idPost]);
     
-        return $this->render('Front/user/showCmnt_by_post.html.twig', [
-            'comments' => $comments,
-        ]);
-    }
 
 
      /*#[Route('/new', name: 'app_commentaires_new', methods: ['GET', 'POST'])]

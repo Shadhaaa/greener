@@ -15,6 +15,18 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/*use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Bridge\Symfony\Mailer\TransportFactory as MailerTransportFactory;
+use Symfony\Component\Notifier\Bridge\Symfony\Mailer\SentMessageTransport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Notifier\Recipient\EmailRecipient;*/
+
+
 
 
 
@@ -47,7 +59,14 @@ class PostController extends AbstractController
         ]);
     }
 
-    
+    /*private $notifier;
+    private $mailer;
+
+    public function __construct(NotifierInterface $notifier, MailerInterface $mailer)
+    {
+    $this->notifier = $notifier;
+    $this->mailer = $mailer;
+    }*/
 
     #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -58,19 +77,27 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $post->setIdEntreprise(1);
+
             $imageFile = $form->get('image')->getData();
             if ($imageFile instanceof UploadedFile) {
-                // If you want to use the same image path without moving it
-                $generatedImageURL = $imageFile->getClientOriginalName(); // You can adjust this based on how you store the image path or name
+                
+                $generatedImageURL = $imageFile->getClientOriginalName(); 
     
-                // Set the image property of your Post entity with the URL
                 $post->setImage($generatedImageURL);
             }
             
             $entityManager->persist($post);
             $entityManager->flush();
 
+            /*$email = (new Email())
+                ->from(new Address('amal.as6060@gmail.com'))
+                ->to(new Address('slimi.amal@esprit.tn'))
+                ->subject('New Post Added')
+                ->text('A new post has been added to the system.');
+
+            // Send the email notification
             
+            $this->mailer->send($email);*/
 
             return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
         }

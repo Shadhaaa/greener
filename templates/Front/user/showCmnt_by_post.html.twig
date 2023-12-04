@@ -76,47 +76,88 @@
 					<div class="main-header">
 						<a class="menu-link-main" href="#">Acceuil user</a>
 						<div class="header-menu">
-							<a class="main-header-link" href="{{path('app_commentaires_user')}}">Ajouter</a>
+							
 							<a class="main-header-link" href="{{path('app_post_user')}}">Afficher</a>
-							 
+							<a class="main-header-link" href="{{ path('app_search1') }}">Rechercher</a> 
 							
 						</div>
 					</div>
 				{% endblock %}
 
 	{% block body %}
+    <style>
+        /* Your CSS styles for the Facebook-style comments */
+        /* ... (previously defined styles) ... */
+
+        .comments-container {
+            max-width: 1000px; 
+            margin: 20px auto;
+            background-color: #f5f6f7; 
+            border-radius: 8px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .comment {
+            border: 1px solid #ddd; /* Border for comment blocks */
+            border-radius: 8px;
+            margin-bottom: 15px; /* Spacing between comments */
+            padding: 15px;
+            background-color: #fff; /* Comment block background */
+        }
+		.edit-delete-links {
+            margin-top: 10px;
+        }
+
+        .edit-delete-links a {
+            text-decoration: none;
+            color: #606770;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .edit-delete-links a:hover {
+            text-decoration: underline;
+        }
+
+        .edit-delete-links .edit-icon,
+        .edit-delete-links .delete-icon {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        /* Styles for comment details */
+        .comment p {
+            margin: 5px 0;
+        }
+
+       
+    </style>
+
     <h1>Commentaires</h1>
 
-    
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>IdCommentaire</th>
-                    <th>IdUser</th>
-                    <th>Contenu</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for commentaire in comments %}
-                    <tr>
-                        <td>{{ commentaire.idCommentaire ?? 'N/A' }}</td>
-                        <td>{{ commentaire.idUser ?? 'N/A' }}</td>
-                        <td>{{ commentaire.contenu ?? 'N/A' }}</td>
-                        <td>{{ commentaire.statut ?? 'N/A' }}</td>
-                        <td>
-                            <a href="{{ path('app_commentaires_edit1', {'idCommentaire': commentaire.idCommentaire}) }}">edit</a>
-                            {{ include('commentaires/_delete_form.html.twig', {'idCommentaire': commentaire.idCommentaire}) }}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-   
+    <div class="comments-container">
+        {% for commentaire in comments %}
+            <div class="comment">
+                <p><strong>IdCommentaire:</strong> {{ commentaire.idCommentaire ?? 'N/A' }}</p>
+                <p><strong>IdUser:</strong> {{ commentaire.idUser ?? 'N/A' }}</p>
+                 <p><strong>Contenu:</strong> <span style="color: #335cad;">{{ commentaire.contenu ?? 'N/A' }}</span></p>
+                <p><strong>Statut:</strong> <span style="color: #335cad;">{{ commentaire.statut ?? 'N/A' }}</span></p>
+                <div class="edit-delete-links">
+                    <a href="{{ path('app_commentaires_edit1', {'idCommentaire': commentaire.idCommentaire}) }}">
+                        <span class="edit-icon">&#9998;</span>Edit
+                    </a>
+                    <a href="{{ path('app_commentaires_edit1', {'idCommentaire': commentaire.idCommentaire}) }}">
+                        <span class="delete-icon">&#128465;</span>Delete
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
     <a href="{{ path('app_post_user') }}">back</a>
 {% endblock %}
+
 
 
 

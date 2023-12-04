@@ -50,7 +50,7 @@ class PostRepository extends ServiceEntityRepository
         ->orWhere('p.contenu LIKE :searchTerm')
         ->orWhere('p.date LIKE :searchTerm')
         ->orWhere('p.image LIKE :searchTerm')
-        // Add more fields as needed
+        
         ->setParameter('searchTerm', '%' . $searchTerm . '%')
         ->getQuery()
         ->getResult();
