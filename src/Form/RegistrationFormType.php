@@ -19,14 +19,7 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('mail')
-            ->add('agreeTerms', ChoiceType::class, [
-                'mapped' => false,
-                'choices' => [
-                    'Agree to terms' => true,
-                ],
-                'expanded' => true,
-                'multiple' => true,
-            ])
+
             ->add('plainPassword', PasswordType::class, [
                 // Instead of being set onto the object directly,
                 // this is read and encoded in the controller

@@ -54,6 +54,15 @@ class EntrepriseRepository extends ServiceEntityRepository
 
         return $count;
     }
+    public function getUserByEmail(string $email): ?Entreprise
+    {
+        $query = $this->createQueryBuilder('entreprise')
+            ->where('entreprise.mail = :email')
+            ->setParameter('email', $email)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
 
     //    /**
     //     * @return Entreprise[] Returns an array of Entreprise objects

@@ -21,7 +21,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -90,15 +89,14 @@ class RegistrationController extends AbstractController
                     ->from(new Address('shadha.nejmaoui@esprit.tn', 'ForGreenerIndustry'))
                     ->to($user->getMail())
                     ->subject('confirmer votre mail')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('Front/confirmation_email.html.twig')
             );
-            return $userAuthenticator->authenticateUser(
+            $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
             );
-
-            // return $this->redirectToRoute('app_user_cnx1');
+            return $this->renderForm('Front/user/verify.html.twig');
         }
 
         return $this->renderForm('Front/user/cree.html.twig');
@@ -124,6 +122,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
         //
-        return $this->redirectToRoute('app_user_cnx');
+        return $this->redirectToRoute('app_cnx');
     }
 }

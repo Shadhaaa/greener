@@ -41,11 +41,4 @@ class Avis
      * @ORM\Column(name="id", type="integer", nullable=false)
      */
     private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idUser", type="integer", nullable=false)
-     */
-    private $iduser;
 }

@@ -26,7 +26,7 @@ class UserRepository extends ServiceEntityRepository
     public function maxID($value)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.idUser = :val')
+            ->andWhere('b.id = :val')
             ->setParameter('val', $value);
     }
     public function countMen()
@@ -63,6 +63,26 @@ class UserRepository extends ServiceEntityRepository
 
         return $count;
     }
+    public function findLatestUsers(int $limit = 10): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+    public function getUserByEmail(string $email): ?User
+    {
+        $query = $this->createQueryBuilder('user')
+            ->where('user.mail = :email')
+            ->setParameter('email', $email)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
+
+
+
 
 
     //    /**

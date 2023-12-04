@@ -9,7 +9,7 @@
 	{{ include('Back/entreprise/_form.html.twig', {'button_label': 'Update'}) }}
 
 	<button>
-		<a href="{{ path('app_entreprise_profile', {'idEntreprise': entreprise.idEntreprise}) }}">annuler</a>
+		<a href="{{ path('app_entreprise_profile', {'id': entreprise.id}) }}">annuler</a>
 	</button>
 
 {% endblock %}

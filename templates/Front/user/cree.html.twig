@@ -1,190 +1,13 @@
-<style>
-	/*custom font*/
-	@import url('https://fonts.googleapis.com/css?family=Montserrat');
+<head>
+	<title>
 
-	/* Genre */
-	div.radio-block {
-		display: inline-block;
-		margin-right: 10px;
-		vertical-align: middle;
-	}
+		{% block title %}
+			bienvenue -  for greener industry
+		{% endblock %}
+	</title>
+	<link href="{{ asset('assets/css/register.css') }}" type="text/css" rel="stylesheet">
 
-	div.radio-block label {
-		display: inline-block;
-		margin-right: 5px;
-		font-weight: bold;
-		vertical-align: middle;
-	}
-
-	div.radio-block input[type="radio"] {
-		display: inline-block;
-		vertical-align: middle;
-		margin-right: 5px;
-	}
-	/* Rôle */
-	div select {
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 3px;
-		width: 100%;
-		box-sizing: border-box;
-		font-family: montserrat;
-		color: #2C3E50;
-		font-size: 13px;
-		margin-top: 5px;
-	}
-	/*basic reset*/
-	* {
-		margin: 0;
-		padding: 0;
-	}
-
-	html {
-		height: 100%;
-		/*Image only BG fallback*/
-
-		/*background = gradient + image pattern combo*/
-		background: #b3ffcc;
-	}
-
-	body {
-		font-family: montserrat, arial, verdana;
-	}
-	/*form styles*/
-	#msform {
-		width: 400px;
-		margin: 50px auto;
-		text-align: center;
-		position: relative;
-	}
-	#msform fieldset {
-		background: white;
-		border: 0 none;
-		border-radius: 3px;
-		box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
-		padding: 20px 30px;
-		box-sizing: border-box;
-		width: 80%;
-		margin: 0 10%;
-		background: #27A77C;
-
-
-		/*stacking fieldsets above each other*/
-		position: relative;
-	}
-	/*Hide all except first fieldset*/
-	#msform fieldset:not(:first-of-type) {
-		display: none;
-	}
-	/*inputs*/
-	#msform input,
-	#msform textarea {
-		padding: 15px;
-		border: 1px solid #ccc;
-		border-radius: 3px;
-		margin-bottom: 10px;
-		width: 100%;
-		box-sizing: border-box;
-		font-family: montserrat;
-		color: #2C3E50;
-		font-size: 13px;
-	}
-	/*buttons*/
-	#msform .action-button {
-		width: 100px;
-		font-weight: bold;
-		color: white;
-		border: 0 none;
-		border-radius: 1px;
-		cursor: pointer;
-		padding: 10px;
-		margin: 10px 5px;
-		text-decoration: none;
-		font-size: 14px;
-	}
-	/*buttons*/
-	#msform .action-button {
-		width: 100px;
-		font-weight: bold;
-		color: black; /* Changer la couleur du texte en noir */
-		border: 0 none;
-		border-radius: 1px;
-		cursor: pointer;
-		padding: 10px;
-		margin: 10px 5px;
-		text-decoration: none;
-		font-size: 14px;
-	}
-	/*headings*/
-	.fs-title {
-		font-size: 15px;
-		text-transform: uppercase;
-		color: #2C3E50;
-		margin-bottom: 10px;
-	}
-	.fs-subtitle {
-		font-weight: normal;
-		font-size: 13px;
-		color: #666;
-		margin-bottom: 20px;
-	}
-	/*progressbar*/
-	#progressbar {
-		margin-bottom: 30px;
-		overflow: hidden;
-		/*CSS counters to number the steps*/
-		counter-reset: step;
-	}
-	#progressbar li {
-		list-style-type: none;
-		color: white;
-		text-transform: uppercase;
-		font-size: 9px;
-		width: 33.33%;
-		float: left;
-		position: relative;
-	}
-	#progressbar li:before {
-		content: counter(step);
-		counter-increment: step;
-		width: 20px;
-		line-height: 20px;
-		display: block;
-		font-size: 10px;
-		color: #333;
-		background: white;
-		border-radius: 3px;
-		margin: 0 auto 5px;
-	}
-	/*progressbar connectors*/
-	#progressbar li:after {
-		content: '';
-		width: 100%;
-		height: 2px;
-		background: white;
-		position: absolute;
-		left: -50%;
-		top: 9px;
-		z-index: -1; /*put it behind the numbers*/
-	}
-	#progressbar li:first-child:after {
-		/*connector not needed before the first step*/
-		content: none;
-	}
-	/*marking active/completed steps green*/
-	/*The number of the step and the connector before it = green*/
-	#progressbar li.active:before,
-	#progressbar li.active:after {
-		background: #27AE60;
-		color: white;
-	}
-</style>
-<title>
-
-	{% block title %}
-		bienvenue -  for greener industry
-	{% endblock %}
-</title>
+</head>
 <!-- multistep form -->
 <form
 	id="msform" method="post" action="{{ path('app_register')}}">
@@ -203,29 +26,26 @@
 			cree compte
 		</h2>
 		<h3 class="fs-subtitle">Etape  1</h3>
-
-
 		<input type="text" name="nom" placeholder="votre nom"/>
 		<input type="text" name="prenom" placeholder="votre prenom"/>
-
 		<input type="text" name="num" placeholder="telephone"/>
 		<br>
 		<br>
 		<div class="radio-block">
-			<label><input type="radio" name="gender" value="homme">
+			<label><input type="radio" name="genre" value="homme">
 				Homme</label>
 			<label><input type="radio" name="genre" value="femme">
 				Femme</label>
 		</div>
 		<br>
 		<br>
-
 		<input type="button" name="next" class="next action-button" value="Next"/>
 	</fieldset>
 	<fieldset>
 		<h2 class="fs-title">Social & geo  Profiles</h2>
 		<h3 class="fs-subtitle">votre presence geo et virtuelle</h3>
 		<input type="text" name="adresse" placeholder="adresse"/>
+		<input type="file" name="pdp" placeholder="image"/>
 		<br>
 		<br>
 		<div>
@@ -244,156 +64,15 @@
 		<h2 class="fs-title">
 			Details personelle</h2>
 		<h3 class="fs-subtitle">We will never sell it</h3>
-		<input type="text" name="mail" placeholder="exmple@aaa.org"/>
-		<input type="password" name="pass" placeholder="Password"/>
-		<input type="password" name="cpass" placeholder="Confirm Password"/>
+		<input type="text" name="mail" placeholder="foulen.ben.falten@exmple.org"/>
+		<input type="password" name="pass" placeholder="mot de passe"/>
+		<input type="password" name="cpass" placeholder="Confirmer Password"/>
 
 		<input type="button" name="previous" class="previous action-button" value="Previous"/>
 	</fieldset>
 	<button class="btn" type="submit">Register</button>
 
 </form>
-<script>
-
-	// Variables
-let current_fs,
-next_fs,
-previous_fs; // fieldsets
-let left,
-opacity,
-scale; // fieldset properties which we will animate
-let animating;
-// flag to prevent quick multi-click glitches
-
-// Function for next button click
-function handleClickNext() {
-if (animating) 
-return false;
-
-
-
-animating = true;
-
-current_fs = this.parentNode;
-next_fs = this.parentNode.nextElementSibling;
-
-// Activate next step on progressbar using the index of next_fs
-document.querySelectorAll("fieldset").forEach(function (elem, index) {
-if (elem === next_fs) {
-document.querySelectorAll("#progressbar li")[index].classList.add("active");
-}
-});
-
-// Show the next fieldset
-next_fs.style.display = "block";
-
-// Hide the current fieldset with style
-let opacityValue = 1;
-let interval = setInterval(function () {
-// As the opacity of current_fs reduces to 0
-// 1. Scale current_fs down to 80%
-scale = 1 - (1 - opacityValue) * 0.2;
-// 2. Bring next_fs from the right(50%)
-left = (opacityValue * 50) + "%";
-// 3. Increase opacity of next_fs to 1 as it moves in
-opacity = 1 - opacityValue;
-current_fs.style.transform = "scale(" + scale + ")";
-current_fs.style.position = "absolute";
-next_fs.style.left = left;
-next_fs.style.opacity = opacity;
-opacityValue -= 0.1;
-
-if (opacityValue <= 0) {
-clearInterval(interval);
-current_fs.style.display = "none";
-animating = false;
-}
-}, 80);
-// Duration
-
-// Custom easing function
-function easeInOutBack(t, b, c, d, s) {
-if (s === undefined) 
-s = 1.70158;
-
-
-
-if ((t /= d / 2) < 1) 
-return c / 2 * (t * t * (((s *=( 1.525)) + 1) * t - s)) + b;
-
-
-
-return c / 2 * ((t -= 2) * t * (((s *=( 1.525)) + 1) * t + s) + 2) + b;
-}
-}
-
-// Function for previous button click
-function handleClickPrevious() {
-if (animating) 
-return false;
-
-
-
-animating = true;
-
-current_fs = this.parentNode;
-previous_fs = this.parentNode.previousElementSibling;
-
-// De-activate current step on progressbar
-document.querySelectorAll("fieldset").forEach(function (elem, index) {
-if (elem === current_fs) {
-document.querySelectorAll("#progressbar li")[index].classList.remove("active");
-}
-});
-
-// Show the previous fieldset
-previous_fs.style.display = "block";
-
-// Hide the current fieldset with style
-let opacityValue = 1;
-let interval = setInterval(function () {
-// As the opacity of current_fs reduces to 0
-// 1. Scale previous_fs from 80% to 100%
-scale = 0.8 + (1 - opacityValue) * 0.2;
-// 2. Take current_fs to the right(50%) - from 0%
-left = ((1 - opacityValue) * 50) + "%";
-// 3. Increase opacity of previous_fs to 1 as it moves in
-opacity = 1 - opacityValue;
-current_fs.style.left = left;
-previous_fs.style.transform = "scale(" + scale + ")";
-previous_fs.style.opacity = opacity;
-opacityValue -= 0.1;
-
-if (opacityValue <= 0) {
-clearInterval(interval);
-current_fs.style.display = "none";
-animating = false;
-}
-}, 80);
-// Duration
-
-// Custom easing function
-function easeInOutBack(t, b, c, d, s) {
-if (s === undefined) 
-s = 1.70158;
-
-
-
-if ((t /= d / 2) < 1) 
-return c / 2 * (t * t * (((s *=( 1.525)) + 1) * t - s)) + b;
-
-
-
-return c / 2 * ((t -= 2) * t * (((s *=( 1.525)) + 1) * t + s) + 2) + b;
-}
-}
-
-// Attach event listeners to the buttons
-document.querySelectorAll(".next").forEach(function (button) {
-button.addEventListener("click", handleClickNext);
-});
-
-document.querySelectorAll(".previous").forEach(function (button) {
-button.addEventListener("click", handleClickPrevious);
-});
-</script>
+{% block javascripts %}
+	<script src="{{ asset('assets/js/register.js') }}"></script>
+{% endblock %}

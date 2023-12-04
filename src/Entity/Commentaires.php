@@ -24,7 +24,7 @@ class Commentaires
     /**
      * @var int
      *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      */
     private $idUser;
 
@@ -48,6 +48,4 @@ class Commentaires
      * @ORM\Column(name="Statut", type="string", length=20, nullable=false)
      */
     private $statut;
-
-
 }

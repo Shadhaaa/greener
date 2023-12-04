@@ -110,7 +110,6 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>IdEntreprise</th>
 
 					<th>Num</th>
 					<th>Mail</th>
@@ -125,7 +124,6 @@
 			<tbody>
 				{% for entreprise in entreprises %}
 					<tr>
-						<td>{{ entreprise.idEntreprise }}</td>
 
 						<td>{{ entreprise.num }}</td>
 						<td>{{ entreprise.mail }}</td>
@@ -136,15 +134,15 @@
 						<td>{{ entreprise.secteur }}</td>
 						<td>
 							<button class="btn">
-								<a href="{{ path('app_entreprise_show', {'idEntreprise': entreprise.idEntreprise}) }}">show</a>
+								<a href="{{ path('app_entreprise_show', {'id': entreprise.id}) }}">show</a>
 							</button>
 							<button class="btn">
-								<a href="{{ path('app_entreprise_edit', {'idEntreprise': entreprise.idEntreprise}) }}">edit</a>
+								<a href="{{ path('app_entreprise_edit', {'id': entreprise.id}) }}">edit</a>
 							</button>
 						</td>
 						<td>
 							<button class="btn">
-								<a href="{{ path('app_entreprise_delete', {'idEntreprise': entreprise.idEntreprise}) }}">supprimer</a>
+								<a href="{{ path('app_entreprise_delete', {'id': entreprise.id}) }}">supprimer</a>
 							</button>
 						</td>
 					</tr>
@@ -160,6 +158,6 @@
 			<a href="{{ path('app_entreprise_new') }}">Create new</a>
 		</button>
 		<button class="btn">
-			<a href="{{ path('app_user_cnx') }}">deconnecter</a>
+			<a href="{{ path('app_cnx') }}">deconnecter</a>
 		</button>
 	{% endblock %}

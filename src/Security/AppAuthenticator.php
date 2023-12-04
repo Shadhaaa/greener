@@ -20,7 +20,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_user_cnx';
+    public const LOGIN_ROUTE = 'app_cnx_';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
@@ -49,7 +49,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
-        return new RedirectResponse($this->urlGenerator->generate('app_user_cnx'));
+        return new RedirectResponse($this->urlGenerator->generate('app_cnx_'));
     }
 
     protected function getLoginUrl(Request $request): string

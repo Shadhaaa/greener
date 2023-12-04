@@ -60,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     private ?string $mdp1;
 
     #[ORM\Column(length: 25, nullable: true)]
-    private ?string $role;
+    private ?string $role = "";
 
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Length(max: 100, maxMessage: "L'adresse ne peut pas dépasser {{ limit }} caractères")]

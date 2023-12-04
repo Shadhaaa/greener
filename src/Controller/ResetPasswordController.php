@@ -41,7 +41,6 @@ class ResetPasswordController extends AbstractController
 
         if ($request->isMethod('POST')) {
 
-
             return $this->processSendingPasswordResetEmail(
                 $request->request->get('mail'),
                 $mailer,
@@ -49,7 +48,9 @@ class ResetPasswordController extends AbstractController
             );
         }
 
-        return $this->render('reset_password/request.html.twig');
+        return $this->render(
+            'reset_password/request.html.twig'
+        );
     }
 
     /**
@@ -120,7 +121,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_user_cnx');
+            return $this->redirectToRoute('app_cnx');
         }
 
         return $this->render('reset_password/reset.html.twig', [
