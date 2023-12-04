@@ -3,65 +3,110 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PanierRepository;
 
-/**
- * Panier
- *
- * @ORM\Table(name="panier", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQUE_client_id", columns={"clientId"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: PanierRepository::class)]
 class Panier
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="panierId", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $panierid;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private ?int $panierid = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="clientId", type="integer", nullable=true)
-     */
-    private $clientid;
+    #[ORM\Column(type: "integer")]
+    private ?int $clientid = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="produitId", type="integer", nullable=true)
-     */
-    private $produitid;
+    #[ORM\Column(type: "integer")]
+    private ?int $produitid = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="quantite", type="integer", nullable=true)
-     */
-    private $quantite;
+    #[ORM\Column(type: "integer")]
+    private ?int $quantite = null;
 
-    /**
-     * @var float|null
-     *
-     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=true)
-     */
-    private $prix;
+    #[ORM\Column]
+    private ?float $prix = null;
 
-    /**
-     * @var float|null
-     *
-     * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=true)
-     */
-    private $total;
+    #[ORM\Column]
+    private ?float $total = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Nomproduit", type="string", length=255, nullable=true)
-     */
-    private $nomproduit;
+    #[ORM\Column(length: 255)] 
+    private ?string $nomproduit = null;
+
+    public function getPanierid(): ?int
+    {
+        return $this->panierid;
+    }
+
+    public function getClientid(): ?int
+    {
+        return $this->clientid;
+    }
+
+    public function setClientid(int $clientid): static
+    {
+        $this->clientid = $clientid;
+
+        return $this;
+    }
+
+    public function getProduitid(): ?int
+    {
+        return $this->produitid;
+    }
+
+    public function setProduitid(int $produitid): static
+    {
+        $this->produitid = $produitid;
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): static
+    {
+        $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): static
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): static
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    public function getNomproduit(): ?string
+    {
+        return $this->nomproduit;
+    }
+
+    public function setNomproduit(string $nomproduit): static
+    {
+        $this->nomproduit = $nomproduit;
+
+        return $this;
+    }
 
 
 }

@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\User\InMemoryUserProviderInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUser;
 use Symfony\Component\Security\Core\User\EquatableTrait;
 
+
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 
@@ -28,6 +29,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Id]
     #[ORM\Column(type: "integer")]
     public ?int $id = null;
+
+    /*#[ORM\OneToMany(mappedBy: 'user' , targetEntity: Commentaires::class,cascade:["remove"],orphanRemoval:true )]
+    private Collection $commentaires;*/
 
     #[ORM\Column(length: 20, nullable: true)]
     #[Assert\NotBlank(message: "Le nom ne peut pas être vide")]
@@ -134,6 +138,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->mdp1 = null;
     }
 
+
+    public function __construct()
+    {
+        $this->commentaires = new ArrayCollection();
+    }
 
     public function getIdUser(): ?int
     {
@@ -276,4 +285,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
         return $this;
     }
+    /**
+     * @return Collection<int, Commentaires>
+     */
+    /*public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaires $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaires $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getUser() === $this) {
+                $commentaire->setUser(null);
+            }
+        }
+
+        return $this;
+    }*/
 }
