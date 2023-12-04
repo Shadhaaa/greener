@@ -26,8 +26,7 @@ class ProduitController extends AbstractController{
     public function index(ProduitRepository $produitRepository,CategorieRepository $categorieRepository , Request $request): Response
     {
         
-
-        $filters = $request->get("Categorie");
+        $filters = $request->get("categories");
 
         $Produits = $produitRepository->findAll();
         
