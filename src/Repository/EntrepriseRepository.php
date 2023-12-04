@@ -20,6 +20,49 @@ class EntrepriseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Entreprise::class);
     }
+    public function countMen()
+    {
+        return $this->createQueryBuilder('b')
+            ->select('COUNT(b) AS menCount')
+            ->andWhere('LOWER(b.genre) = :gender')
+            ->setParameter('gender', 'homme')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countWomen()
+    {
+        return $this->createQueryBuilder('b')
+            ->select('COUNT(b) AS womenCount')
+            ->andWhere('LOWER(b.genre) = :gender')
+            ->setParameter('gender', 'femme')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+    public function getRoleCount(string $role): int
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $query = $entityManager->createQuery(
+            'SELECT COUNT(u) AS count
+            FROM App\Entity\Entreprise u
+            JOIN u.roles r
+            WHERE LOWER(r.role) = :role'
+        );
+        $query->setParameter('role', $role);
+
+        $count = $query->getSingleScalarResult();
+
+        return $count;
+    }
+    public function getUserByEmail(string $email): ?Entreprise
+    {
+        $query = $this->createQueryBuilder('entreprise')
+            ->where('entreprise.mail = :email')
+            ->setParameter('email', $email)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
+    }
 
     //    /**
     //     * @return Entreprise[] Returns an array of Entreprise objects

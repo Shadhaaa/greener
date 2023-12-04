@@ -29,17 +29,19 @@
 					<td>{{ user.mdp1 }}</td>
 					<td>
 						<button class="btn">
-							<a href="{{ path('app_user_delete', {'idUser': user.idUser}) }}">supprimer</a>
+
+							<a href="{{ path('app_user_delete', {'id': user.id}) }}">supprimer</a>
 						</button>
 					</td>
 					<td>
 						<button class="btn">
-							<a href="{{ path('app_user_show', {'idUser': user.idUser}) }}">details</a>
+							<a href="{{ path('app_user_show', {'id': user.id}) }}">details</a>
 						</button>
 					</td>
 					<td>
 						<button class="btn">
-							<a href="{{ path('app_user_edit', {'idUser': user.idUser}) }}">editer</a>
+
+							<a href="{{ path('app_user_edit', {'id': user.id}) }}">editer</a>
 						</button>
 					</td>
 				</tr>
@@ -55,6 +57,6 @@
 		<a href="{{ path('app_user_new') }}">Create new</a>
 	</button>
 	<button class="btn">
-		<a href="{{ path('app_user_cnx') }}">deconnecter</a>
+		<a href="{{path('app_cnx')}}">deconnecter</a>
 	</button>
 {% endblock %}

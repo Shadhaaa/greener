@@ -8,10 +8,7 @@
 
 	<table class="table">
 		<tbody>
-			<tr>
-				<th>IdUser</th>
-				<td>{{ user.idUser }}</td>
-			</tr>
+
 			<tr>
 				<th>Nom</th>
 				<td>{{ user.nom }}</td>
@@ -58,7 +55,7 @@
 		<a href="{{ path('app_user_index') }}">back to list</a>
 	</button>
 	<button>
-		<a href="{{ path('app_user_edit', {'idUser': user.idUser}) }}">edit</a>
+		<a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
 	</button>
 	{{ include('Back/user/_delete_form.html.twig') }}
 {% endblock %}

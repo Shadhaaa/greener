@@ -31,7 +31,7 @@ class Véhicule
     /**
      * @var int
      *
-     * @ORM\Column(name="pollution/km", type="integer", nullable=false)
+     * @ORM\Column(name="pollution_km", type="integer", nullable=false)
      */
     private $pollution_km;
 

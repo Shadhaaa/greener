@@ -5,7 +5,8 @@
 
 {%   block up%}
 <div class="header-menu">
-	<a class="menu-link is-active" href="{{ path('app_user_profile' , {'idUser': user.idUser}) }}">Acceuil</a>
+
+	<a class="menu-link is-active" href="{{ path('app_user_profile' , {'id': user.id}) }}">Acceuil</a>
 	<a class="menu-link" href="#">about us</a>
 	<a class="menu-link notify" href="{{ path('app_user_contact')}}">nos contact</a>
 </div>
@@ -19,7 +20,7 @@
 				<div class="side-menu">
 
 
-					<a href="{{ path('app_user_profile', {'idUser': user.idUser}) }}">
+					<a href="{{ path('app_user_profile', {'id': user.id}) }}">
 						<svg viewbox="0 0 488.932 488.932" fill="currentColor">
 							<path d="M243.158 61.361v-57.6c0-3.2 4-4.9 6.7-2.9l118.4 87c2 1.5 2 4.4 0 5.9l-118.4 87c-2.7 2-6.7.2-6.7-2.9v-57.5c-87.8 1.4-158.1 76-152.1 165.4 5.1 76.8 67.7 139.1 144.5 144 81.4 5.2 150.6-53 163-129.9 2.3-14.3 14.7-24.7 29.2-24.7 17.9 0 31.8 15.9 29 33.5-17.4 109.7-118.5 192-235.7 178.9-98-11-176.7-89.4-187.8-187.4-14.7-128.2 84.9-237.4 209.9-238.8z"/>
 						</svg>
@@ -95,10 +96,7 @@
 					<th>Prenom</th>
 					<td>{{ user.prenom }}</td>
 				</tr>
-				<tr>
-					<th>Pdp</th>
-					<td>{{ user.pdp }}</td>
-				</tr>
+
 				<tr>
 					<th>Num</th>
 					<td>{{ user.num }}</td>
@@ -123,15 +121,15 @@
 					<th>Genre</th>
 					<td>{{ user.genre }}</td>
 				</tr>
-				<tr>
-					<th>InvestisseurInv</th>
-					<td>{{ user.investisseurInv }}</td>
-				</tr>
+
 			</tbody>
 		</table>
 
 		<button>
-			<a href="{{ path('app_user_Meedit', {'idUser': user.idUser}) }}">editer mes informations</a>
+			<a href="{{ path('app_user_Meedit', {'id': user.id}) }}">editer mes informations</a>
+		</button>
+		<button class="btn">
+			<a href="{{ path('app_cnx') }}">deconnecter</a>
 		</button>
 		<button class="btn">
 			<a href="{{ path('app_user_cnx') }}">deconnecter</a>

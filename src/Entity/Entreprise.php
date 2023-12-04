@@ -13,7 +13,8 @@ class Entreprise
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $idEntreprise = null;
+
+    public ?int $id = null;
 
     #[ORM\Column(length: 150)]
     #[Assert\NotBlank(message: "Le nom ne peut pas être vide")]
@@ -74,7 +75,7 @@ class Entreprise
 
     public function getIdEntreprise(): ?int
     {
-        return $this->idEntreprise;
+        return $this->id;
     }
 
     public function getNom(): ?string
