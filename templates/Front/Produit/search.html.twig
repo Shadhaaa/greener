@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product Search{% endblock %}
+
+{% block body %}
+    <h1>Product Search</h1>
+
+    <a href="{{ path('app_produit_find') }}">Search</a>
+     <table class="table">
+        <thead>
+            <tr>
+                <th>Libellet</th>
+                <th>Image</th>
+                <th>Categorie</th>
+                <th>Prix</th>
+                <th>stock Actuelle</th>
+                <th>Production Mentuelle</th>
+                <th>Energie</th>
+                <th>Consommation</th>
+                <th>Vehicule</th>
+                <th>Distance</th>
+                <th>Description</th>
+                <th>Pollution Par Piece</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for P in results %}
+                <tr>
+                    <td>{{P.libelletProduit}}</td>
+                    <td><img src=P.image></td>
+                    <td>{{P.categorie.libellet}}</td>
+                    <td>{{P.prix}}</td>
+                    <td>{{P.stockActuelle}}</td>
+                    <td>{{P.productionMentuelle}}</td>
+                    <td>{{P.typeEnergie.libelletEnergie}}</td>
+                    <td>{{P.consommationrnEnergie}}</td>
+                    <td>{{P.typeVehicule.LibelletVehicule}}</td>
+                    <td>{{P.distanceVehicule}}</td>
+                    <td>{{P.description}}</td>
+                    <td>{{P.pollutionParPiece}}</td>
+                    <td>
+                        <a href="{{ path('app_produit_edit', {'idProduit': P.idProduit}) }}">edit</a>
+                    </td>
+                </tr>
+                {%else%}
+                <tr>
+                    <td>{{results}}</td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_produit_index') }}">return to list</a>
+
+    {{ form_end(form) }}
+
+{% endblock %}

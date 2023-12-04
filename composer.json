@@ -8,11 +8,13 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "cmen/google-charts-bundle": "^5.0",
+        "api-platform/core": "^2.7",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
         "lexik/jwt-authentication-bundle": "^2.18",
+        "nelmio/cors-bundle": "^2.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.24",
         "sensio/framework-extra-bundle": "^6.2",
@@ -47,7 +49,8 @@
         "twig/cssinliner-extra": "^3.8",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/inky-extra": "^3.8",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "vich/uploader-bundle": "^2.2"
     },
     "config": {
         "allow-plugins": {
@@ -79,8 +82,9 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+
+            
+
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -104,7 +108,7 @@
         "symfony/css-selector": "5.4.*",
         "symfony/debug-bundle": "5.4.*",
         "symfony/mailer": "5.4.*",
-        "symfony/maker-bundle": "^1.50",
+        "symfony/maker-bundle": "*",
         "symfony/phpunit-bridge": "^6.3",
         "symfony/security-bundle": "5.4.*",
         "symfony/stopwatch": "5.4.*",

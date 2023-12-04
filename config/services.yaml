@@ -35,5 +35,6 @@ services:
   #class: Symfony\Component\Notifier\Bridge\Symfony\EmailTransportFactory
   #arguments: ['%env(MAILER_DSN)%']
   #tags: ['texter.transport_factory']
+
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
