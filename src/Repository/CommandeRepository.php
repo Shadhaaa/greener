@@ -39,7 +39,7 @@ class CommandeRepository extends ServiceEntityRepository
         ->orWhere('c.adresseLivraison LIKE :searchTerm')
         ->orWhere('c.dateLivraison LIKE :searchTerm')
         ->orWhere('c.modePaiement LIKE :searchTerm')
-        // Add more fields as needed
+        
         ->setParameter('searchTerm', '%' . $searchTerm . '%')
         ->getQuery()
         ->getResult();

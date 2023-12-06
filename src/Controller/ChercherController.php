@@ -18,6 +18,9 @@ class ChercherController extends AbstractController
     {
         return $this->render('chercher/index.html.twig');
     }
+
+    
+
     #[Route('/chercher-commandes', name: 'app_chercher_commandes')]
     public function searchCommandes(Request $request, CommandeRepository $CommandeRepository): Response
     {

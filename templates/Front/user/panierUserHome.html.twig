@@ -113,9 +113,9 @@
                 <td>{{ panier.total }}</td>
                 <td>{{ panier.nomproduit }}</td>
                 <td>
-                    <a href="{{ path('app_panier_show', {'panierid': panier.panierid}) }}">show</a>
-                    <a href="{{ path('app_panier_edit', {'panierid': panier.panierid}) }}">edit</a>
-					<a href="{{ path('app_commande_new', {'panierid': panier.panierid}) }}">command</a>
+                    <a href="{{ path('app_panier_show1', {'panierid': panier.panierid}) }}">show</a>
+                    <a href="{{ path('app_panier_edit1', {'panierid': panier.panierid}) }}">edit</a>
+					<a href="{{ path('app_commande_new2', {'panierid': panier.panierid}) }}">command</a>
                 </td>
             </tr>
         {% else %}
@@ -126,5 +126,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_panier_new') }}">Create new</a>
+    <a href="{{ path('app_panier_new1') }}">Create new</a>
 {% endblock %}
