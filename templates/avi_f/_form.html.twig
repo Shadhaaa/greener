@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+{{ form_row(form.detailavisservice) }}
+
+{# Custom labels for the slider #}
+<div class="form-group d-flex align-items-center">
+	<label class="me-2" for="{{ form.noteservice.vars.id }}">{{ form.noteservice.vars.attr.min }}</label>
+	{{ form_row(form.noteservice, {'attr': {'class': 'form-range'}}) }}
+	<label class="mx-2" for="{{ form.noteservice.vars.id }}">{{ form.noteservice.vars.attr.max }}</label>
+	{# Display the current value of the slider dynamically #}
+	<div class="form-group">
+		<label for="{{ form.noteservice.vars.id }}">Note:</label>
+		<span id="currentValue">{{ form.noteservice.vars.data }}</span>
+	</div>
+</div>
+
+{{ form_row(form.service) }}
+{{ form_row(form.iduser) }}
+
+<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+<script>
+	// Update the current value dynamically as the slider changes
+document.getElementById('{{ form.noteservice.vars.id }}').addEventListener('input', function () {
+document.getElementById('currentValue').innerText = this.value;
+});
+</script>

@@ -1,0 +1,51 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Avis index
+{% endblock %}
+	
+{% block heading %}Liste des Avis
+{% endblock %}
+
+{% block body %}
+<style>
+		.card {
+		background: rgba(255, 255, 255, 0.08);
+	}
+	</style>
+	<section id="recent-posts" class="recent-posts">
+		<div class="container">
+			<div class="section-header">
+				<h2>Liste des Avis</h2>
+				<a href="{{ path('app_avi_f_new') }}" style="font-size: 30px; margin-bottom: 200px;">Create new</a>
+			</div>
+
+			<div class="row">
+				{% for avi in avis %}
+					<div class="p-2 col-lg-4 col-md-6 ">
+						<div class="card p-2 service-item d-flex">
+							<div class="icon flex-shrink-0">
+								<i class="bi bi-briefcase" style="color: #f57813;"></i>
+							</div>
+							<div>
+								<h4 class="title" style="margin-left: 10%;">
+									<a href="{{ path('app_avi_f_show', {'idavis': avi.idavis}) }}" class="stretched-link">Avis N'
+										{{ avi.idavis }}</a>
+								</h4>
+								<h4 class="title">
+									<a href="{{ path('app_avi_f_show', {'idavis': avi.idavis}) }}" class="stretched-link">Number of stars:
+										{{ avi.noteservice }}</a>
+								</h4>
+								<p class="description">{{ avi.detailavisservice }}</p>
+							</div>
+							<a class="btn btn-primary" href="{{ path('app_avi_f_show', {'idavis': avi.idavis}) }}">show</a>
+						</div>
+					</div>
+					{% else %}
+					{# No avis available #}
+				{% endfor %}
+
+				<a href="{{ path('app_avi_f_new') }}">Create new</a>
+			</div>
+		</div>
+	</section>
+{% endblock %}

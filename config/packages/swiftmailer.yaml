@@ -2,3 +2,5 @@ swiftmailer:
     url: '%env(MAILER_DSN)%'
     spool:
         type: 'memory'
+    url: '%env(MAILER_URL)%'
+    spool: { type: 'memory' }

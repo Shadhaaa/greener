@@ -1,0 +1,48 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Avis
+{% endblock %}
+{% block heading %}Avis
+	{{ avi.idavis }}
+{% endblock %}
+
+{% block body %}
+	<style>
+        .table {
+            color: white;
+        }
+    </style>
+
+	<h1>Avis</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Idavis</th>
+				<td>{{ avi.idavis }}</td>
+			</tr>
+			<tr>
+				<th>Detailavisservice</th>
+				<td>{{ avi.detailavisservice }}</td>
+			</tr>
+			<tr>
+				<th>Noteservice</th>
+				<td>{{ avi.noteservice }}</td>
+			</tr>
+			<tr>
+				<th>Service</th>
+				<td>{{ avi.service }}</td>
+			</tr>
+			<tr>
+				<th>Iduser</th>
+				<td>{{ avi.iduser }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_avi_f_index') }}">back to list</a>
+
+	<a href="{{ path('app_avi_f_edit', {'idavis': avi.idavis}) }}">edit</a>
+
+	{{ include('avi_f/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}New Reclamation{% endblock %}
+{% block heading %}New Reclamation{% endblock %}
+
+{% block body %}
+
+    <section id="hero" class="hero d-flex align-items-center" style="color: yellow ">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 mx-auto">
+
+                    {{ include('reclaamtion_f/_form.html.twig') }}
+                    <a class="btn btn-secondary" href="{{ path('app_reclaamtion_f_index') }}">back to list</a>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+

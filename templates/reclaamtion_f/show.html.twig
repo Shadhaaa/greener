@@ -1,0 +1,41 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Reclamation{% endblock %}
+
+{% block body %}
+    <section id="about" class="about">
+        <div class="container aos-init aos-animate" data-aos="fade-up">
+
+            <div class="row gy-4 aos-init aos-animate" data-aos="fade-up">
+                {# <div class="col-lg-4">
+                    <img src="{{  asset('uploads/images/products/'  ~ reclamation.image) }}" class="img-fluid" alt="">
+                </div> #}
+                <div class="col-lg-8">
+                    <div class="content ps-lg-5">
+                        <h3>{{ reclamation.status }}</h3>
+
+                        <div class="meta-top">
+                            <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a >{{ reclamation.nom }}  {{ reclamation.prenom }}</a></li>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a ><time datetime="2020-01-01">{{ reclamation.dateCreation ? reclamation.dateCreation|date('Y-m-d') : '' }}</time></a></li>
+                            </ul>
+                        </div>
+
+                        <div class="meta-top">
+                            <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a >{{ reclamation.email }}</a></li>
+                            </ul>
+                        </div>
+
+                        <p>
+                            {{ reclamation.description }}                        </p>
+                        <ul>
+                            <li><i class="bi bi-check-circle-fill"></i> Service : {{ reclamation.nomservcie }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ path('app_reclaamtion_f_index') }}" class="readmore stretched-link"><span>Back To the list</span><i class="bi bi-arrow-right"></i></a>
+
+        </div>
+    </section>{% endblock %}

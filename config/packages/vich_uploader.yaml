@@ -10,3 +10,12 @@ vich_uploader:
     file_upload:
       uri_prefix: /uploads
       upload_destination: "%kernel.project_dir%/public/uploads"
+
+  metadata:
+        type: annotation
+
+    mappings:
+        products:
+            uri_prefix: /uploads/images/products
+            upload_destination: '%kernel.project_dir%/public/uploads/images/products'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
