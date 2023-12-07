@@ -7,6 +7,8 @@ parameters:
   image_directory: "%kernel.project_dir%/public/images"
   app.bad_words: ["fuck", "bitch", "ass"]
 
+    upload_directory: '%kernel.project_dir%/public/uploads'
+
 services:
   # default configuration for services in *this* file
   _defaults:
@@ -21,6 +23,8 @@ services:
       - "../src/DependencyInjection/"
       - "../src/Entity/"
       - "../src/Kernel.php"
+  
+
 
   App\Service\BadWordsFilter:
     arguments:
