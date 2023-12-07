@@ -21,27 +21,47 @@ class PanierController extends AbstractController
             'paniers' => $panierRepository->findAll(),
         ]);
     }
-
-
-    #[Route('/new', name: 'app_panier_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/user', name: 'app_panier_user', methods: ['GET'])]
+    public function index1(PanierRepository $panierRepository): Response
     {
-        $panier = new Panier();
-        $form = $this->createForm(PanierType::class, $panier);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($panier);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('panier/new.html.twig', [
-            'panier' => $panier,
-            'form' => $form,
+        return $this->render('Front/user/panierUserHome.html.twig', [
+            'paniers' => $panierRepository->findAll(),
         ]);
     }
+
+  
+
+    #[Route('/new', name: 'app_panier_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $clientid = 1;
+    $produitid = 1;
+
+    $panier = new Panier();
+    $panier->setClientId($clientid);
+    $panier->setProduitId($produitid);
+
+    $form = $this->createForm(PanierType::class, $panier);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Calculate total based on price and quantity
+        $total = $panier->getPrix() * $panier->getQuantite();
+        $panier->setTotal($total);
+
+
+        $entityManager->persist($panier);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->renderForm('panier/new.html.twig', [
+        'panier' => $panier,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{panierid}', name: 'app_panier_show', methods: ['GET'])]
     public function show(Panier $panier): Response
@@ -79,4 +99,6 @@ class PanierController extends AbstractController
 
         return $this->redirectToRoute('app_panier_index', [], Response::HTTP_SEE_OTHER);
     }
+
+   
 }
