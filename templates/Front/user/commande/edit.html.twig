@@ -85,10 +85,11 @@
 				{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1>Payment Canceled 😞</h1>
-        <p>Your payment was canceled. If you have any questions, please contact customer support.</p>
-        
-       
-    </div>
+    <h1>Edit Commande</h1>
+
+    {{ include('Front/user/commande/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_commande_user') }}">back to list</a>
+
+   
 {% endblock %}

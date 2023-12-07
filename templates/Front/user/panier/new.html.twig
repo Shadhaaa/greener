@@ -85,10 +85,9 @@
 				{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1>Payment Canceled 😞</h1>
-        <p>Your payment was canceled. If you have any questions, please contact customer support.</p>
-        
-       
-    </div>
+    <h1>Create new Panier</h1>
+
+    {{ include('Front/user/panier/_form.html.twig') }}
+
+    <a href="{{ path('app_panier_user') }}">back to list</a>
 {% endblock %}

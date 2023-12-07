@@ -85,10 +85,45 @@
 				{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1>Payment Canceled 😞</h1>
-        <p>Your payment was canceled. If you have any questions, please contact customer support.</p>
-        
-       
-    </div>
+    <h1>Commande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>CommandeId</th>
+                <td>{{ commande.commandeId }}</td>
+            </tr>
+            <tr>
+                <th>ClientId</th>
+                <td>{{ commande.clientId }}</td>
+            </tr>
+            <tr>
+                <th>DateCommande</th>
+                <td>{{ commande.dateCommande ? commande.dateCommande|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>MontantTotal</th>
+                <td>{{ commande.montantTotal }}</td>
+            </tr>
+            <tr>
+                <th>AdresseLivraison</th>
+                <td>{{ commande.adresseLivraison }}</td>
+            </tr>
+            <tr>
+                <th>DateLivraison</th>
+                <td>{{ commande.dateLivraison ? commande.dateLivraison|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ModePaiement</th>
+                <td>{{ commande.modePaiement }}</td>
+            </tr>
+            <tr>
+                <th>Panierid</th>
+                <td>{{ commande.panierid }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_commande_user') }}">back to list</a>
+
 {% endblock %}
